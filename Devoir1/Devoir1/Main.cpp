@@ -1,6 +1,9 @@
 #include <iostream>
 #include <time.h>
 #include "Player.h"
+#include "Fabrique.h"
+#include "File.h"
+
 using namespace std;
 
 void CardGameStart() { //Distribution des cartes
@@ -56,9 +59,11 @@ void CardGameStart() { //Distribution des cartes
 
 int main() {
 	//Start Card Game
-	CardGameStart();
-	
-	
+	//CardGameStart();
+
+	Fabrique *f = new Fabrique();
+	f->launch();
+
 	system("PAUSE");
 	return 0;
 }
