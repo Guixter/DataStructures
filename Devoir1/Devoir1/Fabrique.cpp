@@ -3,13 +3,13 @@
 #include <iostream>
 #include "Fabrique.h"
 
-#define CARTONS_SIZE 10
-#define FILE_SIZE 100000
-#define FRAME_TIME 30
+#define CARTONS_SIZE 10		// The number of pieces in every box
+#define FILE_SIZE 1000		// The initial capacity of the queues
+#define FRAME_TIME 30		// The time of every frame, in seconds
 
 using namespace std;
 
-
+// The constructor
 Fabrique::Fabrique()
 {
 	srand(time(NULL));
@@ -19,44 +19,42 @@ Fabrique::Fabrique()
 	assemblageTetes = new File<int>(FILE_SIZE);
 	assemblageJupes = new File<int>(FILE_SIZE);
 	assemblageAxes = new File<int>(FILE_SIZE);
+	pistons = new File<int>(FILE_SIZE);
 
-	nbPistons = 0;
-	countdowns = new int[8];
-	for (int i = 0; i < 8; i++) {
-		countdowns[i] = 0;
-	}
-
-	mtActive = false;
-	mjActive = false;
-	maActive = false;
-	mpActive = false;
-	mtBroken = false;
-	mjBroken = false;
-	maBroken = false;
-	mpBroken = false;
+	mt = new Machine(120, 1);
+	mt->inputs[0] = usinageTetes;
+	mt->output = assemblageTetes;
+	mj = new Machine(180, 1);
+	mj->inputs[0] = usinageJupes;
+	mj->output = assemblageJupes;
+	ma = new Machine(150, 1);
+	ma->inputs[0] = usinageAxes;
+	ma->output = assemblageAxes;
+	mp = new Machine(60, 3);
+	mp->inputs[0] = assemblageTetes;
+	mp->inputs[1] = assemblageJupes;
+	mp->inputs[2] = assemblageAxes;
+	mp->output = pistons;
 }
 
-
+// The destructor
 Fabrique::~Fabrique()
 {
-	delete usinageTetes;
-	delete usinageJupes;
-	delete usinageAxes;
-	delete assemblageTetes;
-	delete assemblageJupes;
-	delete assemblageAxes;
-	delete[] countdowns;
+	delete usinageTetes, usinageJupes, usinageAxes;
+	delete assemblageTetes, assemblageJupes, assemblageAxes;
+	delete pistons;
+	delete mt, mj, ma, mp;
 }
 
-
+// Launch the process
 void Fabrique::launch() {
 	int nbFrames = 0;
-	while (nbPistons < 100) {
+	while (pistons->taille() < 100) {
 		updateCartons();
-		updateUsinage(mtActive, mtBroken, countdowns[0], countdowns[4], 120, usinageTetes, assemblageTetes, mtNbBroken);
-		updateUsinage(mjActive, mjBroken, countdowns[1], countdowns[5], 180, usinageJupes, assemblageJupes, mjNbBroken);
-		updateUsinage(maActive, maBroken, countdowns[2], countdowns[6], 150, usinageAxes, assemblageAxes, maNbBroken);
-		updateAssemblage(mpActive, mpBroken, countdowns[3], countdowns[7], 60, assemblageTetes, assemblageJupes, assemblageAxes, mpNbBroken);
+		updateMachine(mt);
+		updateMachine(mj);
+		updateMachine(ma);
+		updateMachine(mp);
 		nbFrames++;
 	}
 
@@ -67,12 +65,13 @@ void Fabrique::launch() {
 	tps -= minutes * 60;
 
 	cout << "Les 100 pieces ont ete assemblees en " << heures << " heure(s) " << minutes << " minute(s) et " << tps << " seconde(s)." << endl;
-	cout << "MT s'est brise " << mtNbBroken << " fois." << endl;
-	cout << "MJ s'est brise " << mjNbBroken << " fois." << endl;
-	cout << "MA s'est brise " << maNbBroken << " fois." << endl;
-	cout << "MP s'est brise " << mpNbBroken << " fois."<< endl;
+	cout << "MT s'est brise " << mt->nbBroken << " fois." << endl;
+	cout << "MJ s'est brise " << mj->nbBroken << " fois." << endl;
+	cout << "MA s'est brise " << ma->nbBroken << " fois." << endl;
+	cout << "MP s'est brise " << mp->nbBroken << " fois."<< endl;
 }
 
+// Sort the pieces of a box
 void Fabrique::updateCartons() {
 	for (int i = 0; i < CARTONS_SIZE; i++) {
 		int random = rand() % 3;
@@ -93,73 +92,49 @@ void Fabrique::updateCartons() {
 	}
 }
 
-void Fabrique::updateUsinage(bool& active, bool& broken, int& countdown, int countdownBroken, int maxTime, File<int>* usinage, File<int>* assemblage, int& nbBroken) {
-	if (broken) {
+// Update a machine
+void Fabrique::updateMachine(Machine* machine) {
+	if (machine->isBroken) {
 		// The machine is broken : decrement the countdown until the machine is repaired
-		countdownBroken -= FRAME_TIME;
-		if (countdownBroken <= 0) {
-			broken = false;
+		machine->brokenCountdown -= FRAME_TIME;
+		if (machine->brokenCountdown <= 0) {
+			machine->isBroken = false;
 		}
 	} else {
-		if (active) {
+		if (machine->isWorking) {
 			// The machine is working on a piece
-			countdown -= FRAME_TIME;
-			if (countdown <= 0) {
+			machine->workingCountdown -= FRAME_TIME;
+			if (machine->workingCountdown <= 0) {
 				// The machine just ended its work
-				assemblage->enfiler(0);
-				countdown = maxTime;
-				active = false;
+				machine->output->enfiler(0);
+				machine->workingCountdown = machine->workTime;
+				machine->isWorking = false;
 
 				// Handle the breakdown
 				int random = rand() % 100;
 				if (random < 25) {
-					broken = true;
-					countdownBroken = ((rand() % 6) + 5) * 60;
-					nbBroken++;
+					machine->isBroken = true;
+					machine->brokenCountdown = ((rand() % 6) + 5) * 60;
+					machine->nbBroken++;
 				}
 			}
-		}
-		if (!active && !usinage->estVide()) {
-			// Start working on a new piece
-			usinage->defiler();
-			active = true;
-		}
-	}
-}
-
-void Fabrique::updateAssemblage(bool& active, bool& broken, int& countdown, int countdownBroken, int maxTime, File<int>* tetes, File<int>* jupes, File<int>* axes, int& nbBroken) {
-	if (broken) {
-		// The machine is broken : decrement the countdown until the machine is repaired
-		countdownBroken -= FRAME_TIME;
-		if (countdownBroken <= 0) {
-			broken = false;
-		}
-	}
-	else {
-		if (active) {
-			// The machine is working on a piston
-			countdown -= FRAME_TIME;
-			if (countdown <= 0) {
-				// The machine just ended its work
-				nbPistons++;
-				countdown = maxTime;
-				active = false;
-
-				// Handle the breakdown
-				int random = rand() % 100;
-				if (random < 25) {
-					broken = true;
-					countdownBroken = ((rand() % 6) + 5) * 60;
-					nbBroken++;
+		} else {
+			// If all the inputs are ready, we can start a new work
+			bool start = true;
+			for (int i = 0; i < machine->nbInputs; i++) {
+				if (machine->inputs[i]->estVide()) {
+					start = false;
+					break;
 				}
 			}
-		}
-		if (!active && !tetes->estVide() && !jupes->estVide() && !axes->estVide()) {
-			// Start working on a new piece
-			tetes->defiler();
-			jupes->defiler();
-			axes->defiler();
-			active = true;
+
+			if (start) {
+				// Remove an element in each input
+				for (int i = 0; i < machine->nbInputs; i++) {
+					machine->inputs[i]->defiler();
+				}
+				machine->isWorking = true;
+			}
 		}
 	}
 }
