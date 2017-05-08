@@ -57,19 +57,69 @@ void CardGameStart() { //Distribution des cartes
 }
 
 
-int main() {
-	//Start Card Game
-	//CardGameStart();
-
-	Fabrique *f = new Fabrique();
-	f->launch();
-
-	system("PAUSE");
-	return 0;
+void CardGame() {
+	CardGameStart();
 }
 
-// TODO :
-/*
- - switch dans le main
- - rendre le code propre (commentaires, bons includes, ...)
-*/
+void Factory() {
+	Fabrique *f = new Fabrique();
+	f->launch();
+	delete f;
+}
+
+void Dictionnary() {
+}
+
+void FamilyTree() {
+}
+
+void DoubleLinkedList() {
+}
+
+void menu() {
+	int choice = -1;
+	while (choice != 0) {
+		cout << "------------------------" << endl;
+		cout <<  "Choix de l'exercice :" << endl << endl;
+		cout << "1 - Cardgame :" << endl;
+		cout << "2 - Factory" << endl;
+		cout << "3 - TODO" << endl;
+		cout << "4 - TODO" << endl;
+		cout << "5 - TODO" << endl;
+		cout << "0 - EXIT" << endl;
+
+		cin >> choice;
+		cout << endl;
+
+		switch (choice) {
+		case 0:
+			break;
+		case 1:
+			CardGame();
+			break;
+		case 2:
+			Factory();
+			break;
+		case 3:
+			Dictionnary();
+			break;
+		case 4:
+			FamilyTree();
+			break;
+		case 5:
+			DoubleLinkedList();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+
+int main() {
+
+	menu();
+
+	//system("PAUSE");
+	return 0;
+}
