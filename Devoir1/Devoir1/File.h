@@ -1,4 +1,5 @@
 #pragma once
+#include <stdexcept>
 
 template<typename T>
 class File
@@ -10,7 +11,7 @@ public:
 	~File();
 
 	// modificateurs
-	void enfiler(const T&) throw (std::length_error);
+	void enfiler(const T&);
 	T defiler() throw (std::logic_error);
 
 	// sélecteurs
@@ -32,6 +33,7 @@ private:
 	int cpt;
 
 	void _copier(T* tabS);
+	void _redimensionner()  throw (std::bad_alloc);
 };
 
 
@@ -39,7 +41,7 @@ private:
 
 // Constructeur
 template<typename T>
-File<T>::File(int max) throw (std::bad_alloc) {
+File<T>::File(int max) {
 	tab = new T[max];
 	tete = 0;
 	queue = 0;
@@ -65,18 +67,17 @@ File<T>::File(const File & f) {
 
 // Enfiler
 template <typename T>
-void File<T>::enfiler(const T& e) throw (std::length_error) {
-	if (cpt < tailleMax) {
-		tab[queue] = e;
-		queue = (queue + 1) % tailleMax;
-		cpt++;
-	} else {
-		throw std::length_error("Enfiler : la file est pleine");
+void File<T>::enfiler(const T& e) {
+	if (cpt == tailleMax) {
+		_redimensionner();
 	}
+	tab[queue] = e;
+	queue = (queue + 1) % tailleMax;
+	cpt++;
 }
 
 template <typename T>
-T File<T>::defiler() throw (std::logic_error) {
+T File<T>::defiler() {
 	if (cpt != 0) {
 		T element = tab[tete];
 		tete = (tete + 1) % tailleMax;
@@ -113,7 +114,7 @@ const T& File<T>::dernier() const {
 }
 
 template <typename T>
-const File<T>& File<T>::operator = (const File<T>& f) throw (std::bad_alloc) {
+const File<T>& File<T>::operator = (const File<T>& f) {
 
 	if (this != &f) {
 
@@ -140,11 +141,39 @@ void File<T>::_copier(T* tabS) {
 }
 
 template <typename T>
+void File<T>::_redimensionner() {
+	// Allocate a bigger table
+	int nouvelleTaille = tailleMax * 2;
+	T* newTab = new T[nouvelleTaille];
+
+	// Copy the values in the new table
+	int current = 0;
+	while (current < cpt) {
+		int index = (tete + current) % tailleMax;
+		newTab[current] = tab[index];
+		current++;
+	}
+
+	// Delete the old tab
+	delete[] tab;
+
+	// Update the attributes
+	tab = newTab;
+	tailleMax = nouvelleTaille;
+	queue = cpt;
+	tete = 0;
+}
+
+template <typename T>
 std::ostream& operator << (std::ostream& f, const File<T>& file) {
 
 	int current = 0;
 	while (current < file.cpt) {
 		int index = ((file.queue - 1) - current) % file.tailleMax;
+
+		if (index < 0) {
+			index += file.tailleMax;
+		}
 		f << file.tab[index] << " ";
 		current ++;
 	}

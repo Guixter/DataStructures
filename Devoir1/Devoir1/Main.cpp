@@ -61,9 +61,16 @@ int main() {
 	//Start Card Game
 	//CardGameStart();
 
-	Fabrique *f = new Fabrique();
-	f->launch();
+	//Fabrique *f = new Fabrique();
+	//f->launch();
 
 	system("PAUSE");
 	return 0;
 }
+
+// TODO :
+/*
+ - machines = objets
+ - switch dans le main
+ - rendre le code propre (commentaires, bons includes, ...)
+*/
