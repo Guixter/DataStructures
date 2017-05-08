@@ -76,6 +76,7 @@ void File<T>::enfiler(const T& e) {
 	cpt++;
 }
 
+// Defiler
 template <typename T>
 T File<T>::defiler() {
 	if (cpt != 0) {
@@ -88,31 +89,37 @@ T File<T>::defiler() {
 	}
 }
 
+// Obtenir la taille de la file
 template <typename T>
 int File<T>::taille() const {
 	return cpt;
 }
 
+// Savoir si la file est vide
 template <typename T>
 bool File<T>::estVide() const {
 	return (cpt == 0);
 }
 
+// Savoir si la file est pleine
 template <typename T>
 bool File<T>::estPleine() const {
 	return (cpt == tailleMax);
 }
 
+// Obtenir le premier élément de la file
 template <typename T>
 const T& File<T>::premier() const {
 	return tab[tete];
 }
 
+// Obtenir le dernier élément de la file
 template <typename T>
 const T& File<T>::dernier() const {
 	return tab[queue];
 }
 
+// Surcharge de l'opérateur =
 template <typename T>
 const File<T>& File<T>::operator = (const File<T>& f) {
 
@@ -132,6 +139,7 @@ const File<T>& File<T>::operator = (const File<T>& f) {
 	return *this;
 }
 
+// Copier un tableau dans la file
 template <typename T>
 void File<T>::_copier(T* tabS) {
 	tab = new T[tailleMax];
@@ -140,6 +148,7 @@ void File<T>::_copier(T* tabS) {
 	}
 }
 
+// Redimensionner la file
 template <typename T>
 void File<T>::_redimensionner() {
 	// Allocate a bigger table
@@ -164,6 +173,7 @@ void File<T>::_redimensionner() {
 	tete = 0;
 }
 
+// Surcharge de l'opérateur <<
 template <typename T>
 std::ostream& operator << (std::ostream& f, const File<T>& file) {
 
