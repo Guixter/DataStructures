@@ -2,6 +2,9 @@
 #include <sstream>
 #include <time.h>
 #include "Player.h"
+#include "Fabrique.h"
+#include "File.h"
+
 using namespace std;
 
 void CardGameStart(int cardsNbr) { //Distribution des cartes
@@ -67,17 +70,81 @@ void CardGameStart(int cardsNbr) { //Distribution des cartes
 }
 
 
-int main() {
+void CardGame() {
 	int cardsNumber;
 	cout << "How many cards do you want ?" << endl;
 	cin >> cardsNumber;
+	cin.clear();
+	cin.ignore(1000, '\n');
 	//Start Card Game
 	if (cardsNumber > 50)
 		cardsNumber = 50;
 	else if (2 > cardsNumber)
 		cardsNumber = 2;
 	CardGameStart(cardsNumber);
-	
-	system("PAUSE");
+}
+
+void Factory() {
+	Fabrique *f = new Fabrique();
+	f->launch();
+	delete f;
+}
+
+void Dictionnary() {
+}
+
+void FamilyTree() {
+}
+
+void DoubleLinkedList() {
+}
+
+void menu() {
+	int choice = -1;
+	while (choice != 0) {
+		cout << "------------------------" << endl;
+		cout <<  "Choix de l'exercice :" << endl << endl;
+		cout << "1 - Cardgame :" << endl;
+		cout << "2 - Factory" << endl;
+		cout << "3 - TODO" << endl;
+		cout << "4 - TODO" << endl;
+		cout << "5 - TODO" << endl;
+		cout << "0 - EXIT" << endl;
+
+		cin >> choice;
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << endl;
+
+		switch (choice) {
+		case 0:
+			break;
+		case 1:
+			CardGame();
+			break;
+		case 2:
+			Factory();
+			break;
+		case 3:
+			Dictionnary();
+			break;
+		case 4:
+			FamilyTree();
+			break;
+		case 5:
+			DoubleLinkedList();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+
+int main() {
+
+	menu();
+
+	//system("PAUSE");
 	return 0;
 }
