@@ -19,6 +19,12 @@
     <Filter Include="Header Files\CardGame">
       <UniqueIdentifier>{7f1079a0-9805-4873-9b25-6ace2a060f23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Dictionary">
+      <UniqueIdentifier>{0ca83367-3a8a-428f-ab91-88f808fa2a3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dictionary">
+      <UniqueIdentifier>{c5e2e7e3-bf38-4872-80f0-f92c4d8f2301}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -30,6 +36,15 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\CardGame</Filter>
     </ClCompile>
+    <ClCompile Include="Arbre.cpp">
+      <Filter>Source Files\Dictionary</Filter>
+    </ClCompile>
+    <ClCompile Include="Noeud.cpp">
+      <Filter>Source Files\Dictionary</Filter>
+    </ClCompile>
+    <ClCompile Include="Dictionary.cpp">
+      <Filter>Source Files\Dictionary</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pile.h">
@@ -37,6 +52,15 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files\CardGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Arbre.h">
+      <Filter>Header Files\Dictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="Noeud.h">
+      <Filter>Header Files\Dictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="Dictionary.h">
+      <Filter>Header Files\Dictionary</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

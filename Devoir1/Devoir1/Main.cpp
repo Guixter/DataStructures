@@ -2,6 +2,7 @@
 #include <sstream>
 #include <time.h>
 #include "Player.h"
+#include "Dictionary.h"
 using namespace std;
 
 void CardGameStart(int cardsNbr) { //Distribution des cartes
@@ -66,8 +67,13 @@ void CardGameStart(int cardsNbr) { //Distribution des cartes
 	}
 }
 
+void DictionaryMain(){
+	Dictionary* dictionary = new Dictionary("FichierTest/g.dico");
+}
+
 
 int main() {
+	/*
 	int cardsNumber;
 	cout << "How many cards do you want ?" << endl;
 	cin >> cardsNumber;
@@ -76,7 +82,9 @@ int main() {
 		cardsNumber = 50;
 	else if (2 > cardsNumber)
 		cardsNumber = 2;
-	CardGameStart(cardsNumber);
+	CardGameStart(cardsNumber);*/
+	DictionaryMain();
+
 	
 	system("PAUSE");
 	return 0;
