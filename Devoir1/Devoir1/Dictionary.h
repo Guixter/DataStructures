@@ -23,8 +23,10 @@ public:
 
 	void ajouterMot(std::string s);
 	void enleverMot(std::string s);
+	bool enleverMotRec(std::string, Noeud<char>&);
 	void afficherDict();
 	bool chercheMot(std::string s);
+	bool chercherMotDansArbre(std::string s, Noeud<char>& arbre);
 
 	void afficherCharDict(std::string s, Noeud<char>* current);
 
