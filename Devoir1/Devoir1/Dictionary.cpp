@@ -142,7 +142,12 @@ bool Dictionary::chercherMotDansArbre(std::string s, Noeud<char>& arbre) {
 	if (tailleMot == 0)
 		return false;
 
-	if (tailleMot == 1 && s[0] == arbre.data && arbre.endWord) {//&& arbre.finDeMot)
+	/*pour l ordre alphabetique
+	if (s[0] > arbre.data)
+		return false;
+	*/
+
+	if (tailleMot == 1 && s[0] == arbre.data && arbre.endWord) {
 		return true;
 	}
 
@@ -154,8 +159,7 @@ bool Dictionary::chercherMotDansArbre(std::string s, Noeud<char>& arbre) {
 	if (s[0] == arbre.data) {		
 		return chercherMotDansArbre(sousChaine, *(arbre.nextLetter));	
 	}
-	else
-	{
+	else{
 		return chercherMotDansArbre(s, *(arbre.alternative));
 	}
 }
