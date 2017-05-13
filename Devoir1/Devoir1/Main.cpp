@@ -5,6 +5,8 @@
 #include "Fabrique.h"
 #include "File.h"
 
+#include "ArbreGenealogique.h"
+
 using namespace std;
 
 void CardGameStart(int cardsNbr) { //Distribution des cartes
@@ -143,8 +145,19 @@ void menu() {
 
 int main() {
 
-	menu();
+	//menu();
 
-	//system("PAUSE");
+	ArbreGenealogique<int> *a = new ArbreGenealogique<int>(1);
+
+	a->ajouter(1, 2);
+	a->ajouter(1, 3);
+	
+	auto _aux = [](int elt) {
+		cout << elt << endl;
+	};
+
+	a->appliquerPrefixe(_aux);
+
+	system("PAUSE");
 	return 0;
 }
