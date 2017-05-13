@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="Fabrique.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pile.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="Fabrique.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Pile.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
