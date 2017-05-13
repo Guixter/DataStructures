@@ -1,66 +1,60 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\CardGame">
-      <UniqueIdentifier>{d6e05fd5-edf9-4e32-8aff-bab58d23de40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\CardGame">
-      <UniqueIdentifier>{7f1079a0-9805-4873-9b25-6ace2a060f23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Dictionary">
-      <UniqueIdentifier>{0ca83367-3a8a-428f-ab91-88f808fa2a3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Dictionary">
-      <UniqueIdentifier>{c5e2e7e3-bf38-4872-80f0-f92c4d8f2301}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\CardGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Arbre.cpp">
-      <Filter>Source Files\Dictionary</Filter>
-    </ClCompile>
-    <ClCompile Include="Noeud.cpp">
-      <Filter>Source Files\Dictionary</Filter>
-    </ClCompile>
-    <ClCompile Include="Dictionary.cpp">
-      <Filter>Source Files\Dictionary</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Pile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\CardGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Arbre.h">
-      <Filter>Header Files\Dictionary</Filter>
-    </ClInclude>
-    <ClInclude Include="Noeud.h">
-      <Filter>Header Files\Dictionary</Filter>
-    </ClInclude>
-    <ClInclude Include="Dictionary.h">
-      <Filter>Header Files\Dictionary</Filter>
-    </ClInclude>
-  </ItemGroup>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Exercice2">
+      <UniqueIdentifier>{3f5857c4-816a-4a57-a7be-5c8e703acb26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice2">
+      <UniqueIdentifier>{f3540e65-ff7e-4d07-a3f8-cc7b42b3d75e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exercice1">
+      <UniqueIdentifier>{7f1079a0-9805-4873-9b25-6ace2a060f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice1">
+      <UniqueIdentifier>{d6e05fd5-edf9-4e32-8aff-bab58d23de40}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Exercice1</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Source Files\Exercice2</Filter>
+    </ClCompile>
+    <ClCompile Include="Fabrique.cpp">
+      <Filter>Source Files\Exercice2</Filter>
+    </ClCompile>
+    <ClCompile Include="Pile.cpp">
+      <Filter>Source Files\Exercice1</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Exercice1</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Header Files\Exercice2</Filter>
+    </ClInclude>
+    <ClInclude Include="Fabrique.h">
+      <Filter>Header Files\Exercice2</Filter>
+    </ClInclude>
+    <ClInclude Include="Pile.h">
+      <Filter>Header Files\Exercice1</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
