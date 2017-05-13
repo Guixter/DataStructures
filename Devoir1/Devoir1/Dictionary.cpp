@@ -9,6 +9,10 @@ Dictionary::Dictionary(std::string filename)
 	racine = new Noeud<char>('/');
 
 	//arbre = new Arbre<char>();
+	ajouterDico(filename);
+}
+
+void Dictionary::ajouterDico(std::string filename) {
 	ifstream myReadFile;
 	myReadFile.open(filename);
 	char output[100];
@@ -21,21 +25,31 @@ Dictionary::Dictionary(std::string filename)
 	myReadFile.close();
 }
 
+
 void Dictionary::ajouterMot(std::string s) {
 	Noeud<char>* current(racine);
+	Noeud<char>* parent(racine);
 	std::string remainingS(s);
 	int i(0), sSize(s.size());
 
 	while (i < sSize) {
 
-		while (current->data != s[i] && current->alternative != 0 && current->alternative->data <= s[i]) {
+		while (current->data != s[i] && current->alternative != 0 && (int)current->alternative->data <= (int)s[i]) {
 			current = current->alternative;
 		}
 		if (current->data != s[i]) {
 			Noeud<char>* newNoeud = new Noeud<char>(s[i]);
-			newNoeud->alternative = current->alternative;
-			current->alternative = newNoeud;
-			current = current->alternative;
+			if ((int)current->data > (int)s[i] && current->alternative == 0 && parent != racine) {
+				parent->nextLetter = newNoeud;
+				newNoeud->alternative = current;
+				current = newNoeud;
+			}
+			else {
+				newNoeud->alternative = current->alternative;
+				current->alternative = newNoeud;
+				current = current->alternative;
+
+			}
 
 			createEndWord(s, current, i);
 			break;
@@ -44,6 +58,7 @@ void Dictionary::ajouterMot(std::string s) {
 				createEndWord(s, current, i);
 				break;
 			}
+			parent = current;
 			current = current->nextLetter;
 		} else {
 			cout << "Unknown error" << endl;

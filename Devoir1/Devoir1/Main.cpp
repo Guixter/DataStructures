@@ -12,123 +12,65 @@ using namespace std;
 void CardGameStart(int cardsNbr) { //Distribution des cartes
 
 	Pile<struct Card>* deck = new Pile<struct Card>(100);
-
 	srand((unsigned int)time(NULL));
 
 	for (int i = 0; i < cardsNbr * 2; i++) {
-
 		deck->empiler(Card(rand() % 10 + 1, rand() % 2, rand() % 4 + 1));
-
 	}
 
 	Player* p1 = new Player();
-
 	Player* p2 = new Player();
 
-
-
 	for (int i = 0; i < cardsNbr; i++) {
-
 		p1->addCard(deck->depiler());
-
 		p2->addCard(deck->depiler());
-
 	}
-
-
 
 	while (p1->isDeckNotkEmpty() && p2->isDeckNotkEmpty()) {
 
 		Card CardP1 = p1->Play();
-
 		Card CardP2 = p2->Play();
-
 		cout << " P1 : " << CardP1.value << " - " << CardP1.color << " | P2 :" << CardP2.value << " - " << CardP2.color;
 
 		if (CardP1 == CardP2) {
-
 			p1->winCard(CardP1);
-
 			p2->winCard(CardP2);
-
 			cout << " (EGALITE)" << endl;
-
-		}
-
-		else if (CardP1 > CardP2) {
-
+		} else if (CardP1 > CardP2) {
 			p1->winCard(CardP1);
-
 			p1->winCard(CardP2);
-
 			cout << " (P1)" << endl;
-
-		}
-
-		else if (CardP2 > CardP1) {
-
+		} else if (CardP2 > CardP1) {
 			p2->winCard(CardP2);
-
 			p2->winCard(CardP1);
-
 			cout << " (P2)" << endl;
-
-		}
-
-		else
-
+		} else
 			cout << "ERROR" << endl;
-
-
-
 	}
 
 	float PointsP1 = p1->countPoints();
-
 	float PointsP2 = p2->countPoints();
-
 	cout << PointsP1 << " - " << PointsP2 << " : ";
 
 	if (PointsP1 == PointsP2) {
-
 		cout << "No Winner" << endl;
-
-	}
-
-	else if (PointsP1 > PointsP2) {
-
+	} else if (PointsP1 > PointsP2) {
 		cout << "P1 is the winner" << endl;
-
-	}
-
-	else if (PointsP2 > PointsP1) {
-
+	} else if (PointsP2 > PointsP1) {
 		cout << "P2 is the winner" << endl;
-
 	}
-
 	cin.clear();
-
-
 
 	cout << "Do you want to replay ? (O/N)" << endl;
 
 	char Choice[100];
-
 	cin >> Choice;
 
 	if (Choice[0] == 'O') {
-
 		CardGameStart(cardsNbr);
-
-	}
-
-	else {
-
+	} else {
 		return;
-
 	}
-
 }
 
 void CardGame() {
@@ -172,8 +114,59 @@ void Factory() {
 
 
 void DictionnaryF() {
-	Dictionary* dictionary = new Dictionary("FichierTest/alain.dico");
-	dictionary->afficherDict();
+	Dictionary* dictionary = new Dictionary("FichierTest/g.dico");
+
+	int choice = -1;
+	while (choice != 0) {
+		cout << "------------------------" << endl;
+		cout << "Que voulez vous faire avec le dictionnaire ?" << endl << endl;
+		cout << "1 - Afficher le dictionnaire :" << endl;
+		cout << "2 - Ajouter un dictionnaire" << endl;
+		cout << "3 - Chercher un mot" << endl;
+		cout << "4 - Supprimer un mot dictionnaire" << endl;
+		cout << "5 - Ajouter un mot au dictionnaire" << endl;
+		cout << "0 - Quitter le dictionnaire" << endl;
+
+		cin >> choice;
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << endl;
+		cin.clear();
+
+		char word[100];
+
+		switch (choice) {
+		case 0:
+			break;
+		case 1:
+			dictionary->afficherDict();
+			break;
+		case 2:
+			cout << "Donner le nom du fichier : " << endl;
+			cin >> word;
+			dictionary->ajouterDico("FichierTest/"+ (string)word +".dico");
+			break;
+		case 3:
+			cin.clear();
+			cout << "Mot recherché : " << endl;
+			cin >> word;
+			cout << dictionary->chercheMot(word) << endl;
+			break;
+		case 4:
+			cout << "Mot à supprimer : " << endl;
+			cin >> word;
+			dictionary->enleverMot(word);
+			break;
+		case 5:
+			cout << "Mot à ajouter : " << endl;
+			cin >> word;
+			dictionary->ajouterMot(word);
+			break;
+		default:
+			break;
+		}
+	}
+
 }
 
 
