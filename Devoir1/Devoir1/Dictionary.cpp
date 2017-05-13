@@ -65,7 +65,7 @@ void Dictionary::createEndWord(std::string s, Noeud<char>* n, int index) {
 
 
 void Dictionary::enleverMot(std::string s) {
-	int tailleMot = s.size;
+	int tailleMot = s.size();
 
 	if (!chercheMot(s))
 		return;
@@ -79,12 +79,12 @@ void Dictionary::enleverMot(std::string s) {
 bool Dictionary::enleverMotRec(std::string s, Noeud<char>& arbre){
 
 	//comme le mot est present, on y est
-	if (s.size == 1 && s[0] == arbre.data) {
+	if (s.size() == 1 && s[0] == arbre.data) {
 		arbre.endWord = false;
 		return true;
 	}
 
-	int tailleMot = s.size;
+	int tailleMot = s.size();
 	std::string sousChaine = s.substr(1, tailleMot);
 
 	//si la lettre suivante appartient au mot
@@ -122,7 +122,7 @@ bool Dictionary::chercheMot(std::string s) {
 }
 
 bool Dictionary::chercherMotDansArbre(std::string s, Noeud<char>& arbre) {
-	int tailleMot = s.size;
+	int tailleMot = s.size();
 
 	if (tailleMot == 0)
 		return false;
