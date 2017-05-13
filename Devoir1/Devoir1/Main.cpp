@@ -1,22 +1,13 @@
 #include <iostream>
-
 #include <sstream>
-
 #include <time.h>
-
 #include "Player.h"
-
 #include "Dictionary.h"
-
 #include "Fabrique.h"
-
 #include "File.h"
 
 
-
 using namespace std;
-
-
 
 void CardGameStart(int cardsNbr) { //Distribution des cartes
 

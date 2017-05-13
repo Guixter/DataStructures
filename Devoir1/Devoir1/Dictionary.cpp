@@ -2,7 +2,7 @@
 #include<fstream>
 #include <string>
 #include "Dictionary.h"
-#include "Noeud.h"
+#include "Arbre.h"
 using namespace std;
 
 Dictionary::Dictionary(std::string filename)
@@ -11,6 +11,7 @@ Dictionary::Dictionary(std::string filename)
 	ifstream myReadFile;
 	myReadFile.open(filename);
 	char output[100];
+	cout << "????";
 	if (myReadFile.is_open()) {
 		while (!myReadFile.eof()) {
 			myReadFile >> output;

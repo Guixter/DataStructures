@@ -17,6 +17,6 @@ public:
 	~Dictionary();
 
 private:
-	//Arbre<char>* arbre;
+	Arbre<char>* arbre;
 };
 
