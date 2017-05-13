@@ -28,13 +28,15 @@ void Dictionary::ajouterMot(std::string s) {
 
 	while (i < sSize) {
 
-		while (current->data != s[i] && current->alternative != 0) {
+		while (current->data != s[i] && current->alternative != 0 && current->alternative->data <= s[i]) {
 			current = current->alternative;
 		}
 		if (current->data != s[i]) {
 			Noeud<char>* newNoeud = new Noeud<char>(s[i]);
+			newNoeud->alternative = current->alternative;
 			current->alternative = newNoeud;
 			current = current->alternative;
+
 			createEndWord(s, current, i);
 			break;
 		} else if (current->data == s[i]) {

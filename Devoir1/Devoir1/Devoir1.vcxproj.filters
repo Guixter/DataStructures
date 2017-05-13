@@ -45,9 +45,6 @@
     <ClCompile Include="Pile.cpp">
       <Filter>Source Files\Exercice1</Filter>
     </ClCompile>
-    <ClCompile Include="Arbre.cpp">
-      <Filter>Source Files\Exercice 3</Filter>
-    </ClCompile>
     <ClCompile Include="Dictionary.cpp">
       <Filter>Source Files\Exercice 3</Filter>
     </ClCompile>
@@ -67,9 +64,6 @@
     </ClInclude>
     <ClInclude Include="Pile.h">
       <Filter>Header Files\Exercice1</Filter>
-    </ClInclude>
-    <ClInclude Include="Arbre.h">
-      <Filter>Header Files\Exercice 3</Filter>
     </ClInclude>
     <ClInclude Include="Dictionary.h">
       <Filter>Header Files\Exercice 3</Filter>

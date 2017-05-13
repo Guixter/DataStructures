@@ -204,7 +204,7 @@ void menu() {
 
 		cout << "2 - Factory" << endl;
 
-		cout << "3 - TODO" << endl;
+		cout << "3 - Dictionary" << endl;
 
 		cout << "4 - TODO" << endl;
 
