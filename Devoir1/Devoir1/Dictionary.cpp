@@ -2,7 +2,6 @@
 #include<fstream>
 #include <string>
 #include "Dictionary.h"
-#include "Arbre.h"
 using namespace std;
 
 Dictionary::Dictionary(std::string filename)
@@ -11,19 +10,19 @@ Dictionary::Dictionary(std::string filename)
 	ifstream myReadFile;
 	myReadFile.open(filename);
 	char output[100];
-	cout << "????";
 	if (myReadFile.is_open()) {
 		while (!myReadFile.eof()) {
 			myReadFile >> output;
 			ajouterMot(output);
-			cout << output;
+			cout << output << endl;
 		}
 	}
 	myReadFile.close();
 }
 
 void Dictionary::ajouterMot(std::string s) {
-
+	Noeud<char>* a;
+	cout << s.size() << endl;
 }
 
 void Dictionary::enleverMot(std::string s) {
@@ -37,6 +36,7 @@ void Dictionary::afficherDict() {
 bool Dictionary::chercheMot(std::string s) {
 	return true;
 }
+
 
 Dictionary::~Dictionary()
 {

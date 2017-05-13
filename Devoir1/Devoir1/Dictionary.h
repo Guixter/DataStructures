@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-#include "Arbre.h"
 
 class Dictionary
 {
@@ -17,6 +15,14 @@ public:
 	~Dictionary();
 
 private:
-	Arbre<char>* arbre;
+	template<typename E>
+	class Noeud {
+	public:
+		E data;
+		Noeud *nextLetter;
+		Noeud *alternative;
+		Noeud(const E& d) : nextLetter(0), data(d), alternative(0) { }
+	};
+	Noeud<char>* racine;
 };
 
