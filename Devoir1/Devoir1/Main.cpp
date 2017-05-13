@@ -172,8 +172,16 @@ void Factory() {
 
 
 void DictionnaryF() {
-	Dictionary* dictionary = new Dictionary("FichierTest/alain.dico");
+	Dictionary* dictionary = new Dictionary("FichierTest/g.dico");
 	dictionary->afficherDict();
+	
+	cout << dictionary->chercheMot("seine");
+	dictionary->enleverMot("seine");
+	cout << dictionary->chercheMot("seine");
+	dictionary->afficherDict();
+
+
+
 }
 
 

@@ -79,16 +79,24 @@ void Dictionary::enleverMot(std::string s) {
 bool Dictionary::enleverMotRec(std::string s, Noeud<char>& arbre){
 
 	//comme le mot est present, on y est
-	if (s.size() == 1 && s[0] == arbre.data) {
-		arbre.endWord = false;
-		return true;
+	if (s.size() == 1){
+		if (s[0] == arbre.data) {
+			arbre.endWord = false;
+			/*cout << endl << arbre.data << endl;
+			cout << endl << "final" << endl;*/
+			return true;
+		}
+		//note : ne devrait pas arriver
+		/*cout << endl << arbre.data << endl;
+		cout << endl << "fin d arbre" << endl;*/
+		return false;
 	}
 
 	int tailleMot = s.size();
 	std::string sousChaine = s.substr(1, tailleMot);
 
 	//si la lettre suivante appartient au mot
-	if (enleverMotRec(sousChaine, *arbre.nextLetter)) {
+	if (arbre.nextLetter != 0 && (arbre.data == s[0]) && enleverMotRec(sousChaine, *arbre.nextLetter)) {
 		//si la lettre n est plus utilisee, la retirer
 		if (arbre.nextLetter->nextLetter == 0 && !arbre.nextLetter->endWord) {
 
@@ -96,19 +104,26 @@ bool Dictionary::enleverMotRec(std::string s, Noeud<char>& arbre){
 			arbre.nextLetter = arbre.nextLetter->alternative;
 		}
 		//on doit etre modifie par le predecesseur, car on appartient au mot
+		/*cout << endl << arbre.data << endl;
+		cout << endl << "enfant dans mot" << endl;*/
 		return true;
 	}
+
 	//si la lettre alternative appartient au mot
-	if (enleverMotRec(s, *arbre.alternative)) {
+	if (arbre.alternative != 0 && enleverMotRec(s, *arbre.alternative)) {
 		if (arbre.alternative->nextLetter == 0 && !arbre.alternative->endWord) {
 
 			//delete *(arbre.alternative);
 			arbre.alternative = arbre.alternative->alternative;
 		}
 		//on n appartient pas au mot, on ne doit pas etre modifie
+		/*cout << endl << arbre.data << endl;
+		cout << endl << "alternative dans mot" << endl;*/
 		return false;
 	}
 	//qu on appartienne au mot ou non, nos fils n ont pas ete modifies donc on ne doit pas etre modifie
+	/*cout << endl << arbre.data << endl;
+	cout << endl << "pas concerne" << endl;*/
 	return false;
 }
 
