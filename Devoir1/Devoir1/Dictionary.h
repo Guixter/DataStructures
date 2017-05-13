@@ -10,9 +10,13 @@ private:
 		bool endWord;
 		Noeud *nextLetter;
 		Noeud *alternative;
-		Noeud(const E& d) : nextLetter(0), data(d), alternative(0) { }
+		Noeud(const E& d) : nextLetter(0), data(d), alternative(0), endWord(false) { }
 	};
 	Noeud<char>* racine;
+
+
+	//Needed Functions
+	void createEndWord(std::string s, Noeud<char>* n, int index);
 
 public:
 	Dictionary(std::string filename = "");
@@ -24,10 +28,9 @@ public:
 	bool chercheMot(std::string s);
 	bool chercherMotDansArbre(std::string s, Noeud<char>& arbre);
 
-	//void afficherCharDict();
+	void afficherCharDict(std::string s, Noeud<char>* current);
 
 	~Dictionary();
-
 
 };
 

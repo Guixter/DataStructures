@@ -172,7 +172,8 @@ void Factory() {
 
 
 void DictionnaryF() {
-	Dictionary* dictionary = new Dictionary("FichierTest/g.dico");
+	Dictionary* dictionary = new Dictionary("FichierTest/alain.dico");
+	dictionary->afficherDict();
 }
 
 
