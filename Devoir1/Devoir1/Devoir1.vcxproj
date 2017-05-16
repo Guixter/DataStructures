@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arbre.cpp" />
     <ClCompile Include="ArbreGenealogique.cpp" />
     <ClCompile Include="Fabrique.cpp" />
     <ClCompile Include="File.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arbre.h" />
     <ClInclude Include="ArbreGenealogique.h" />
     <ClInclude Include="Fabrique.h" />
     <ClInclude Include="File.h" />

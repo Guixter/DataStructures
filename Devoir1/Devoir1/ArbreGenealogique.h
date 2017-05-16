@@ -1,205 +1,57 @@
 #pragma once
-#include "vector"
-#include <functional>
+#include <string>
+#include "Arbre.h"
+#include <iostream>
 
-template <typename T>
-class ArbreGenealogique {
+// An eye color
+enum EyeColor { BLEU, VERT, MARRON };
+
+/*
+* Une personne.
+*/
+struct Personne {
 public:
+	std::string prenom;
+	std::string nom;
+	int annee_naissance;
+	EyeColor couleur_yeux;
 
-	ArbreGenealogique(T racine);
-	~ArbreGenealogique();
+	friend bool operator==(const Personne& l, const Personne& r)
+	{
+		return (l.prenom == r.prenom && l.nom == r.nom);
+	}
 
-	int taille() const;
-	void ajouter(T parent, T elt);
-	bool estVide() const;
-
-	void appliquerPrefixe(std::function<void(T)> f);
-	void appliquerSuffixe(std::function<void(T)> f);
-	void appliquerInfixe(std::function<void(T)> f);
-
-	/*
-	void descendancePrefixe() const;
-	void descendanceSuffixe() const;
-	void descendanceInfixe() const;
-	void ajouterMembre();
-	void couleurYeux(int couleur);
-	void couleurYeux(); ?
-	int moyenneAge();
-	*/
-
-private:
-
-	struct Noeud {
-		T data;
-		Noeud* filsGauche;
-		Noeud* filsDroit;
-		Noeud* parent;
-
-		Noeud(T data, Noeud* parent = NULL, Noeud* filsGauche = NULL, Noeud* filsDroit = NULL) :
-					data(data), parent(parent), filsGauche(filsGauche), filsDroit(filsDroit) {}
-	};
-
-	Noeud* root;
-
-
-	template <typename U> U _recursif(std::function<U(Noeud*, U, U)> f, Noeud* n, U terminal) const;
-	void _appliquerPrefixe(std::function<void(Noeud*)> f);
-	void _appliquerSuffixe(std::function<void(Noeud*)> f);
-	void _appliquerInfixe(std::function<void(Noeud*)> f);
+	friend std::ostream& operator << (std::ostream& f, Personne p) {
+		f << p.prenom << " " << p.nom;
+		return f;
+	}
 };
 
 
+class ArbreGenealogique
+{
+public:
+	ArbreGenealogique();
+	~ArbreGenealogique();
 
-template <typename T>
-ArbreGenealogique<T>::ArbreGenealogique(T racine) {
-	root = new Noeud(racine);
-}
+	void launch();
 
-template <typename T>
-ArbreGenealogique<T>::~ArbreGenealogique() {
-	auto _suppr = [](Noeud* n) {
-		if (n->parent != NULL) {
-			if (n->parent->filsGauche == n) {
-				n->parent->filsGauche = NULL;
-			} else {
-				n->parent->filsDroit = NULL;
-			}
-		}
-		delete n;
-	};
+private:
 
-	_appliquerSuffixe(_suppr);
-}
+	void menu();
 
-template <typename T>
-int ArbreGenealogique<T>::taille() const {
-	std::function<int(Noeud*, int, int)> _aux;
-	_aux = [](Noeud* n, int gauche, int droite) {
-		if (gauche >= droite) {
-			return gauche + 1;
-		} else {
-			return droite + 1;
-		}
-	};
+	void AjouterMembre();
+	void AfficherTailleHauteur();
+	void ListerDescendance();
+	void ListerCouleur();
+	void ListerCouleurAPartirDUnePersonne();
+	void CalculerMoyenneAge();
 
-	return _recursif(_aux, root, 0);
-}
 
-template <typename T>
-void ArbreGenealogique<T>::ajouter(T parent, T elt) {
-	auto _ajout = [&parent, &elt](Noeud* n) {
-		if (n->data == parent) {
-			if (n->filsGauche == NULL) {
-				Noeud* nouveau = new Noeud(elt, n);
-				n->filsGauche = nouveau;
-			} else if (n->filsDroit == NULL) {
-				Noeud* nouveau = new Noeud(elt, n);
-				n->filsDroit = nouveau;
-			}
-		}
-	};
+	Personne DemanderPersonne();
+	Personne ChercherPersonne();
 
-	_appliquerSuffixe(_ajout);
-}
 
-template <typename T>
-bool ArbreGenealogique<T>::estVide() const {
-	return (root == NULL);
-}
+	Arbre<Personne> *arbre;
+};
 
-template <typename T>
-void ArbreGenealogique<T>::appliquerPrefixe(std::function<void(T)> f) {
-	auto _aux = [f](Noeud* n) {
-		f(n->data);
-	};
-
-	_appliquerPrefixe(_aux);
-}
-
-template <typename T>
-void ArbreGenealogique<T>::appliquerSuffixe(std::function<void(T)> f) {
-	auto _aux = [](Noeud* n) {
-		f(n->data);
-	};
-
-	_appliquerSuffixe(_aux);
-}
-
-template <typename T>
-void ArbreGenealogique<T>::appliquerInfixe(std::function<void(T)> f) {
-	auto _aux = [](Noeud* n) {
-		f(n->data);
-	};
-
-	_appliquerInfixe(_aux);
-}
-
-///////////////////////////////////////
-
-template <typename T>
-void ArbreGenealogique<T>::_appliquerPrefixe(std::function<void(Noeud*)> f) {
-	std::function<void(Noeud*)> _aux;
-	_aux = [&_aux, f](Noeud* n) {
-		f(n);
-		if (n->filsGauche != NULL) {
-			_aux(n->filsGauche);
-		}
-		if (n->filsDroit != NULL) {
-			_aux(n->filsDroit);
-		}
-	};
-	
-	if (root != NULL) {
-		_aux(root);
-	}
-}
-
-template <typename T>
-void ArbreGenealogique<T>::_appliquerSuffixe(std::function<void(Noeud*)> f) {
-	
-	std::function<void(Noeud*)> _aux;
-	_aux = [&_aux, f](Noeud* n) {
-		if (n->filsGauche != NULL) {
-			_aux(n->filsGauche);
-		}
-		if (n->filsDroit != NULL) {
-			_aux(n->filsDroit);
-		}
-		f(n);
-	};
-
-	
-	if (root != NULL) {
-		_aux(root);
-	}
-}
-
-template <typename T>
-void ArbreGenealogique<T>::_appliquerInfixe(std::function<void(Noeud*)> f) {
-	std::function<void(Noeud*)> _aux;
-	_aux = [&_aux, f](Noeud* n) {
-		if (n->filsGauche != NULL) {
-			_aux(n->filsGauche);
-		}
-		f(n);
-		if (n->filsDroit != NULL) {
-			_aux(n->filsDroit);
-		}
-	}
-
-		if (root != NULL) {
-			_aux(root);
-		}
-}
-
-template<typename T>
-template<typename U>
-U ArbreGenealogique<T>::_recursif(std::function<U(Noeud*, U, U)> f, Noeud * n, U terminal) const {
-	if (n == NULL) {
-		return terminal;
-	}
-
-	U gaucheValue = _recursif(f, n->filsGauche, terminal);
-	U droiteValue = _recursif(f, n->filsDroit, terminal);
-	return f(n, gaucheValue, droiteValue);
-}

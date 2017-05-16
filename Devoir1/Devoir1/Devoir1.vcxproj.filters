@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Exercice1">
       <UniqueIdentifier>{d6e05fd5-edf9-4e32-8aff-bab58d23de40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Exercice4">
+      <UniqueIdentifier>{957499e8-369b-4518-b0df-24eee25e54a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exercice4">
+      <UniqueIdentifier>{df8f2299-7f9b-4dbc-81c3-49f5d70f3a15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -42,8 +48,11 @@
     <ClCompile Include="Pile.cpp">
       <Filter>Source Files\Exercice1</Filter>
     </ClCompile>
+    <ClCompile Include="Arbre.cpp">
+      <Filter>Source Files\Exercice4</Filter>
+    </ClCompile>
     <ClCompile Include="ArbreGenealogique.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Exercice4</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,8 +68,11 @@
     <ClInclude Include="Pile.h">
       <Filter>Header Files\Exercice1</Filter>
     </ClInclude>
+    <ClInclude Include="Arbre.h">
+      <Filter>Header Files\Exercice4</Filter>
+    </ClInclude>
     <ClInclude Include="ArbreGenealogique.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Exercice4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

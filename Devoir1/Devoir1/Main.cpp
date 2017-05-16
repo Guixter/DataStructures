@@ -4,8 +4,9 @@
 #include "Player.h"
 #include "Fabrique.h"
 #include "File.h"
-
 #include "ArbreGenealogique.h"
+
+#include "Arbre.h"
 
 using namespace std;
 
@@ -96,6 +97,9 @@ void Dictionnary() {
 }
 
 void FamilyTree() {
+	ArbreGenealogique *a = new ArbreGenealogique();
+	a->launch();
+	delete a;
 }
 
 void DoubleLinkedList() {
@@ -109,7 +113,7 @@ void menu() {
 		cout << "1 - Cardgame :" << endl;
 		cout << "2 - Factory" << endl;
 		cout << "3 - TODO" << endl;
-		cout << "4 - TODO" << endl;
+		cout << "4 - Arbre genealogique" << endl;
 		cout << "5 - TODO" << endl;
 		cout << "0 - EXIT" << endl;
 
@@ -145,19 +149,8 @@ void menu() {
 
 int main() {
 
-	//menu();
+	menu();
 
-	ArbreGenealogique<int> *a = new ArbreGenealogique<int>(1);
-
-	a->ajouter(1, 2);
-	a->ajouter(1, 3);
-	
-	auto _aux = [](int elt) {
-		cout << elt << endl;
-	};
-
-	a->appliquerPrefixe(_aux);
-
-	system("PAUSE");
+	//system("PAUSE");
 	return 0;
 }
