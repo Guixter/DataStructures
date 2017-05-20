@@ -159,10 +159,9 @@ bool Dictionary::chercherMotDansArbre(std::string s, Noeud<char>& arbre) {
 	if (tailleMot == 0)
 		return false;
 
-	/*pour l ordre alphabetique
-	if (s[0] > arbre.data)
+	//pour l ordre alphabetique
+	if ((int)s[0] < (int)arbre.data)
 		return false;
-	*/
 
 	if (tailleMot == 1 && s[0] == arbre.data && arbre.endWord) {
 		return true;
