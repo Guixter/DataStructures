@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Exercice 3">
       <UniqueIdentifier>{602da4b0-379f-4a3b-aede-8e60dfa528b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Exercice5">
+      <UniqueIdentifier>{4f574ff5-e77b-4e53-aac2-13853882ebef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice5">
+      <UniqueIdentifier>{ab9af68b-2227-4482-b3bb-4b34d983caa4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -51,6 +57,9 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>Source Files\Exercice5</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -67,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Dictionary.h">
       <Filter>Header Files\Exercice 3</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Header Files\Exercice5</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
