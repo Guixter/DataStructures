@@ -10,8 +10,11 @@ public:
 	void launch();
 
 private:
-
 	SOCKET previous;
 	SOCKET next;
+
+	void listen_thread(SOCKET s);
+
+	void execute();
 };
 
