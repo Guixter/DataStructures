@@ -172,7 +172,7 @@ void ArbreGenealogique::AjouterMembre() {
 	Personne p;
 	while (cont) {
 		// Créer la personne à ajouter
-		cout << "Entrez les donnees de l'enfant" << endl;
+		cout << "Entrez les donnees de l'enfant (15 ans de difference avec son parent minimum)" << endl;
 		p = DemanderPersonne();
 
 		if (p.annee_naissance <= parent.annee_naissance + 15) {
@@ -189,6 +189,7 @@ void ArbreGenealogique::AjouterMembre() {
 void ArbreGenealogique::AfficherTailleHauteur() {
 	cout << "La taille de l'arbre est : " << arbre->taille() << endl;
 	cout << "La hauteur de l'arbre est : " << arbre->hauteur() << endl;
+	system("pause");
 }
 
 void ArbreGenealogique::ListerDescendance() {
@@ -196,7 +197,31 @@ void ArbreGenealogique::ListerDescendance() {
 	cout << "Choisissez la personne" << endl;
 	Personne p = ChercherPersonne();
 
-	arbre->afficher(p);
+	// Type de parcours
+	int choix = -1;
+	while (choix < 0 || choix > 2) {
+		cout << "Parcours ? (Prefixe = 0, Infixe = 1, Suffixe = 2) ";
+
+		cin >> choix;
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << endl;
+	}
+
+	auto _aux = [](Personne elt) {
+		cout << "* " << elt.prenom << " " << elt.nom << endl;
+	};
+
+	if (choix == 0) {
+		arbre->appliquerPrefixe(_aux, p);
+	}
+	else if (choix == 1) {
+		arbre->appliquerInfixe(_aux, p);
+	}
+	else if (choix == 2) {
+		arbre->appliquerSuffixe(_aux, p);
+	}
+	system("pause");
 }
 
 void ArbreGenealogique::ListerCouleur() {
@@ -214,10 +239,11 @@ void ArbreGenealogique::ListerCouleur() {
 
 	auto _aux = [c](Personne elt) {
 		if (elt.couleur_yeux == c) {
-			cout << elt.prenom << " " << elt.nom << endl;
+			cout << "* " << elt.prenom << " " << elt.nom << endl;
 		}
 	};
 	arbre->appliquerPrefixe(_aux);
+	system("pause");
 }
 
 void ArbreGenealogique::ListerCouleurAPartirDUnePersonne() {
@@ -227,10 +253,11 @@ void ArbreGenealogique::ListerCouleurAPartirDUnePersonne() {
 
 	auto _aux = [p](Personne elt) {
 		if (elt.couleur_yeux == p.couleur_yeux) {
-			cout << elt.prenom << " " << elt.nom << endl;
+			cout << "* " << elt.prenom << " " << elt.nom << endl;
 		}
 	};
 	arbre->appliquerPrefixe(_aux, p);
+	system("pause");
 }
 
 void ArbreGenealogique::CalculerMoyenneAge() {
@@ -244,4 +271,5 @@ void ArbreGenealogique::CalculerMoyenneAge() {
 	sommeAnnee /= arbre->taille();
 
 	cout << "Age moyen : " << (2017 - sommeAnnee) << endl;
+	system("pause");
 }

@@ -11,7 +11,6 @@ public:
 
 	int taille() const;
 	int hauteur() const;
-	void afficher(T t);
 	void ajouter(T parent, T elt);
 	bool estVide() const;
 
@@ -29,17 +28,9 @@ private:
 		Noeud* filsGauche;
 		Noeud* filsDroit;
 		Noeud* parent;
-		int profondeur;
 
 		Noeud(T data, Noeud* parent = NULL, Noeud* filsGauche = NULL, Noeud* filsDroit = NULL) :
-					data(data), parent(parent), filsGauche(filsGauche), filsDroit(filsDroit)
-		{
-			if (parent != NULL) {
-				profondeur = parent->profondeur + 1;
-			} else {
-				profondeur = 0;
-			}
-		}
+					data(data), parent(parent), filsGauche(filsGauche), filsDroit(filsDroit) { }
 	};
 
 	Noeud* root;
@@ -96,28 +87,6 @@ int Arbre<T>::taille() const {
 	};
 
 	return _recursif(_aux, root, 0);
-}
-
-template <typename T>
-void Arbre<T>::afficher(T t) {
-	// Trouver le noeud correspondant
-	Noeud* node = NULL;
-	auto _aux = [&node, t](Noeud* n) {
-		if (n != NULL && n->data == t) {
-			node = n;
-		}
-	};
-	_appliquerPrefixe(_aux, root);
-
-	// Afficher à partir de ce noeud
-	auto _aux2 = [](Noeud* n) {
-		for (int i = 1; i <= n->profondeur; i++) {
-			cout << "\t";
-		}
-		cout << "* " << n->data << endl;
-	};
-
-	_appliquerPrefixe(_aux2, node);
 }
 
 template <typename T>
