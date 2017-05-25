@@ -10,8 +10,13 @@
 //using namespace std;
 #define DEFAULT_BUFLEN 512
 
+enum Message_Type { SEND_ID, SEND_ID_BACK, GET_ID };
+
 Network::Network()
 {
+	next = -1;
+	previous = -1;
+	msgRcv = -1;
 }
 
 
@@ -94,34 +99,115 @@ void Network::listen_thread(SOCKET s) {
 	int iResult;
 
 	while (true) {
-		iResult = recv(s, recvbuf, recvbuflen, 0);
-		if (iResult > 0)
-			printf("You received: %s\n", recvbuf);
+		iResult = recv(s, recvbuf, recvbuflen -1, 0);
+		if (iResult > 0) {
+			recvbuf[iResult] = '\0';
+			process_message(recvbuf, s);
+		}
 		else if (iResult == 0)
 			printf("Connection closed\n");
-		//else
-		//	printf("recv failed: %d\n", WSAGetLastError());
-
+		else {
+			//printf("recv failed: %d\n", WSAGetLastError());
+			// ICI POUR RELISTEN PARCE QUE VEUT DIRE CONNEC COUPE
+			if (s == previous)
+				previous = -1;
+			else if (s == next)
+				next = -1;
+			return;
+		}
 	}
 }
+
+void Network::process_message(const char* msg, SOCKET s) {
+	if (strlen(msg) < 1)
+		return;
+
+	Message message(msg);
+	SOCKET other = (s == next) ? previous : next;
+
+	//std::cout << message.typeMessage << " - " << message.origin << " - " << message.id << std::endl;
+
+	switch (message.typeMessage) {
+		case SEND_ID:
+			if (other == -1) {
+				message.id += GetCurrentProcessId();
+				message.typeMessage = SEND_ID_BACK;
+				message.serialize();
+				send_message(message.bin, s);
+			}
+			else {
+				message.id += GetCurrentProcessId();
+				message.serialize();
+				send_message(message.bin, other);
+			}
+			break;
+		case GET_ID:
+			std::cout << " Somme des ids : "<< message.id << std::endl;
+			send_message(message.bin, other);
+			break;
+		case SEND_ID_BACK:
+			if (message.origin == GetCurrentProcessId()) {
+				msgRcv++;
+				std::cout << message.id;
+				idSum += message.id;
+				if (msgRcv == 2) {
+					idSum += GetCurrentProcessId();
+					std::cout << " Somme des ids : " << idSum << std::endl;
+					message.typeMessage = GET_ID;
+					message.id = idSum;
+
+					message.serialize();
+					send_message(message.bin, previous);
+					send_message(message.bin, next);
+
+					msgRcv = -1;
+				}
+			}
+			else {
+				send_message(message.bin, other);
+			}
+			break;
+		default:
+			return;
+			break;
+	}
+
+}
+
 
 void Network::execute() {
 	int choice = -1;
 	int iResult;
 
 	while (choice != 0) {
-	//listen for tempSocket
+		//listen for tempSocket
 		std::cout << "Voulez vous recupérer les ids?" << std::endl;
 		std::cin >> choice;
-		std::cout << "Envoi" << std::endl;
+		Message msg(SEND_ID, GetCurrentProcessId(), 0);
 
-		iResult = send(next, std::to_string(choice).c_str(), (int)strlen(std::to_string(choice).c_str()), 0);
-		if (iResult == SOCKET_ERROR) {
-			printf("send failed: %d\n", WSAGetLastError());
-			// le prochain socket est surement non défini
+		if (msgRcv == -1) {
+			msgRcv = 0;
+			idSum = 0;
+
+			if (previous == -1)
+				msgRcv++;
+			if (next == -1)
+				msgRcv++;
+
+			send_message(msg.bin, next);
+			send_message(msg.bin, previous);
+
 		}
+	}
+}
 
-		iResult = send(previous, std::to_string(choice).c_str(), (int)strlen(std::to_string(choice).c_str()), 0);
+void Network::send_message(const char* msg, SOCKET s) {
+	int iResult;
+
+	if (s != -1) {
+//		std::cout << "Envoi de :";
+//		std::cout << msg << std::endl; // A supp
+		iResult = send(s, msg, (int)strlen(msg), 0);
 		if (iResult == SOCKET_ERROR) {
 			printf("send failed: %d\n", WSAGetLastError());
 			// le précédent socket est surement non défini
