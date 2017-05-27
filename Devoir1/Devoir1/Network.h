@@ -47,6 +47,9 @@ private:
 	SOCKET previous;
 	SOCKET next;
 
+	int rightPort;
+	int leftPort;
+
 	int msgRcv;
 	int idSum;
 
@@ -55,5 +58,8 @@ private:
 	void send_message(const char* msg, SOCKET s);
 
 	void execute();
+
+	void reconnect_left_socket(SOCKET &s);
+	void reconnect_right_socket(SOCKET &s);
 };
 
