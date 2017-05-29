@@ -4,6 +4,60 @@
 #include "Dictionary.h"
 using namespace std;
 
+void launchDictionnary() {
+	Dictionary* dictionary = new Dictionary("FichierTest/g.dico");
+
+	int choice = -1;
+	while (choice != 0) {
+		cout << "------------------------" << endl;
+		cout << "Que voulez vous faire avec le dictionnaire ?" << endl << endl;
+		cout << "1 - Afficher le dictionnaire :" << endl;
+		cout << "2 - Ajouter un dictionnaire" << endl;
+		cout << "3 - Chercher un mot" << endl;
+		cout << "4 - Supprimer un mot dictionnaire" << endl;
+		cout << "5 - Ajouter un mot au dictionnaire" << endl;
+		cout << "0 - Quitter le dictionnaire" << endl;
+
+		cin >> choice;
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << endl;
+		cin.clear();
+
+		char word[100];
+		switch (choice) {
+		case 0:
+			break;
+		case 1:
+			dictionary->afficherDict();
+			break;
+		case 2:
+			cout << "Donner le nom du fichier : " << endl;
+			cin >> word;
+			dictionary->ajouterDico("FichierTest/" + (string)word + ".dico");
+			break;
+		case 3:
+			cin.clear();
+			cout << "Mot recherche : " << endl;
+			cin >> word;
+			cout << dictionary->chercheMot(word) << endl;
+			break;
+		case 4:
+			cout << "Mot a supprimer : " << endl;
+			cin >> word;
+			dictionary->enleverMot(word);
+			break;
+		case 5:
+			cout << "Mot a ajouter : " << endl;
+			cin >> word;
+			dictionary->ajouterMot(word);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 Dictionary::Dictionary(std::string filename)
 {
 	racine = new Noeud<char>('/');

@@ -1,5 +1,7 @@
 #pragma once
 
+void launchDictionnary();
+
 class Dictionary
 {
 private:
