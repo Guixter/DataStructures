@@ -193,7 +193,7 @@ void Network::execute() {
 		std::cin >> choice;
 		Message msg(SEND_ID, GetCurrentProcessId(), 0);
 
-		//if (msgRcv == -1) {
+		if (msgRcv == -1) {
 			msgRcv = 0;
 			idSum = 0;
 
@@ -207,7 +207,7 @@ void Network::execute() {
 			std::cout << "previous" << std::endl;
 			send_message(msg.bin, previous);
 
-		//}
+		}
 	}
 }
 
@@ -216,7 +216,7 @@ void Network::send_message(const char* msg, SOCKET s) {
 
 	if (s != -1) {
 		
-		std::cout << "Envoi de :";
+		//std::cout << "Envoi de :";
 //		std::cout << msg << std::endl; // A supp
 		iResult = send(s, msg, (int)strlen(msg), 0);
 		if (iResult == SOCKET_ERROR) {
