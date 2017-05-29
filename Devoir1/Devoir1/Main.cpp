@@ -4,9 +4,7 @@
 #include "Player.h"
 #include "Fabrique.h"
 #include "File.h"
-#include "ArbreGenealogique.h"
-
-#include "Arbre.h"
+#include "FamilyTree.h"
 
 using namespace std;
 
@@ -96,10 +94,10 @@ void Factory() {
 void Dictionnary() {
 }
 
-void FamilyTree() {
-	ArbreGenealogique *a = new ArbreGenealogique();
-	a->launch();
-	delete a;
+void launchFamilyTree() {
+	FamilyTree *t = new FamilyTree();
+	t->launch();
+	delete t;
 }
 
 void DoubleLinkedList() {
@@ -135,7 +133,7 @@ void menu() {
 			Dictionnary();
 			break;
 		case 4:
-			FamilyTree();
+			launchFamilyTree();
 			break;
 		case 5:
 			DoubleLinkedList();
