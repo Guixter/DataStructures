@@ -1,72 +1,90 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Exercice2">
-      <UniqueIdentifier>{3f5857c4-816a-4a57-a7be-5c8e703acb26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Exercice2">
-      <UniqueIdentifier>{f3540e65-ff7e-4d07-a3f8-cc7b42b3d75e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Exercice1">
-      <UniqueIdentifier>{7f1079a0-9805-4873-9b25-6ace2a060f23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Exercice1">
-      <UniqueIdentifier>{d6e05fd5-edf9-4e32-8aff-bab58d23de40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Exercice 3">
-      <UniqueIdentifier>{dac3e822-b8e6-45de-9b09-b8c5525fd860}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Exercice 3">
-      <UniqueIdentifier>{602da4b0-379f-4a3b-aede-8e60dfa528b9}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Exercice1</Filter>
-    </ClCompile>
-    <ClCompile Include="File.cpp">
-      <Filter>Source Files\Exercice2</Filter>
-    </ClCompile>
-    <ClCompile Include="Fabrique.cpp">
-      <Filter>Source Files\Exercice2</Filter>
-    </ClCompile>
-    <ClCompile Include="Pile.cpp">
-      <Filter>Source Files\Exercice1</Filter>
-    </ClCompile>
-    <ClCompile Include="Dictionary.cpp">
-      <Filter>Source Files\Exercice 3</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\Exercice1</Filter>
-    </ClInclude>
-    <ClInclude Include="File.h">
-      <Filter>Header Files\Exercice2</Filter>
-    </ClInclude>
-    <ClInclude Include="Fabrique.h">
-      <Filter>Header Files\Exercice2</Filter>
-    </ClInclude>
-    <ClInclude Include="Pile.h">
-      <Filter>Header Files\Exercice1</Filter>
-    </ClInclude>
-    <ClInclude Include="Dictionary.h">
-      <Filter>Header Files\Exercice 3</Filter>
-    </ClInclude>
-  </ItemGroup>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Exercice2">
+      <UniqueIdentifier>{3f5857c4-816a-4a57-a7be-5c8e703acb26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice2">
+      <UniqueIdentifier>{f3540e65-ff7e-4d07-a3f8-cc7b42b3d75e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exercice1">
+      <UniqueIdentifier>{7f1079a0-9805-4873-9b25-6ace2a060f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice1">
+      <UniqueIdentifier>{d6e05fd5-edf9-4e32-8aff-bab58d23de40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice 3">
+      <UniqueIdentifier>{dac3e822-b8e6-45de-9b09-b8c5525fd860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exercice 3">
+      <UniqueIdentifier>{602da4b0-379f-4a3b-aede-8e60dfa528b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice4">
+      <UniqueIdentifier>{957499e8-369b-4518-b0df-24eee25e54a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exercice4">
+      <UniqueIdentifier>{df8f2299-7f9b-4dbc-81c3-49f5d70f3a15}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Exercice1</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Source Files\Exercice2</Filter>
+    </ClCompile>
+    <ClCompile Include="Fabrique.cpp">
+      <Filter>Source Files\Exercice2</Filter>
+    </ClCompile>
+    <ClCompile Include="Pile.cpp">
+      <Filter>Source Files\Exercice1</Filter>
+    </ClCompile>
+    <ClCompile Include="Dictionary.cpp">
+      <Filter>Source Files\Exercice 3</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryTree.cpp">
+      <Filter>Source Files\Exercice4</Filter>
+    </ClCompile>
+    <ClCompile Include="FamilyTree.cpp">
+      <Filter>Source Files\Exercice4</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Exercice1</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Header Files\Exercice2</Filter>
+    </ClInclude>
+    <ClInclude Include="Fabrique.h">
+      <Filter>Header Files\Exercice2</Filter>
+    </ClInclude>
+    <ClInclude Include="Pile.h">
+      <Filter>Header Files\Exercice1</Filter>
+    </ClInclude>
+    <ClInclude Include="Dictionary.h">
+      <Filter>Header Files\Exercice 3</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTree.h">
+      <Filter>Header Files\Exercice4</Filter>
+    </ClInclude>
+    <ClInclude Include="FamilyTree.h">
+      <Filter>Header Files\Exercice4</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
