@@ -33,7 +33,7 @@ void Network::launch() {
 
 	int tempSocketPort = 0;
 
-	std::cout << "Port : ";
+	std::cout << "Port d'ecoute : ";
 	std::cin >> tempSocketPort;
 	rightPort = tempSocketPort;
 	leftPort = rightPort - 1;
@@ -55,12 +55,7 @@ void Network::launch() {
 	servSin.sin_port = htons(tempSocketPort-1);
 
 	if (connect(previous, (SOCKADDR *)&servSin, sizeof servSin) == 0) {
-		//Pred is define
-		std::cout << "Connecte a " << tempSocketPort-1 << std::endl;
-		//Start to listen 
-	} else {
-		std::cout << "Tentative de connexion a echoue" << std::endl;
-		std::cout << WSAGetLastError() << std::endl;
+		std::cout << "Connecte au port d'ecoute n" << tempSocketPort-1 << std::endl;
 	}
 
 	//Start to listen previous thread
@@ -74,7 +69,7 @@ void Network::launch() {
 	SOCKET aux;
 	while ((aux = accept(tempSocket, (SOCKADDR *)&clientSin, &sizeof_csin)) == INVALID_SOCKET);
 	next = aux;
-	std::cout << tempSocketPort << " accepte" << std::endl;
+	std::cout << "Le port d'ecoute s'est connecte a un noeud" << std::endl;
 
 	closesocket(tempSocket);
 
@@ -89,14 +84,6 @@ void Network::launch() {
 }
 
 void Network::listen_thread(SOCKET s) {
-	//check if socket is connected first
-	/*char error_code;
-	int error_code_size = sizeof(error_code);
-	if (getsockopt(s, SOL_SOCKET, SO_ERROR, &error_code, &error_code_size) == -1) {
-		std::cout << "socket error" << std::endl;
-		return;
-	}*/
-
 	// if socket is still connected try to receive from him
 	char recvbuf[DEFAULT_BUFLEN];
 	int recvbuflen = DEFAULT_BUFLEN;
@@ -111,8 +98,7 @@ void Network::listen_thread(SOCKET s) {
 		else if (iResult == 0)
 			printf("Connection closed\n");
 		else {
-			//printf("recv failed: %d\n", WSAGetLastError());
-			// ICI POUR RELISTEN PARCE QUE VEUT DIRE CONNEC COUPE
+			// Connection aborted : try to reconnect to another node
 			if (s == previous) {
 				previous = -1;
 				reconnect_left_socket(s);
@@ -133,15 +119,15 @@ void Network::process_message(const char* msg, SOCKET s) {
 	Message message(msg);
 	SOCKET other = (s == next) ? previous : next;
 
-	//std::cout << message.typeMessage << " - " << message.origin << " - " << message.id << std::endl;
-
 	switch (message.typeMessage) {
 		case SEND_ID:
 			if (other == -1) {
-				message.id += GetCurrentProcessId();
-				message.typeMessage = SEND_ID_BACK;
-				message.serialize();
-				send_message(message.bin, s);
+				if (s != -1) {
+					message.id += GetCurrentProcessId();
+					message.typeMessage = SEND_ID_BACK;
+					message.serialize();
+					send_message(message.bin, s);
+				}
 			}
 			else {
 				message.id += GetCurrentProcessId();
@@ -156,7 +142,6 @@ void Network::process_message(const char* msg, SOCKET s) {
 		case SEND_ID_BACK:
 			if (message.origin == GetCurrentProcessId()) {
 				msgRcv++;
-				std::cout << message.id;
 				idSum += message.id;
 				if (msgRcv == 2) {
 					idSum += GetCurrentProcessId();
@@ -189,8 +174,7 @@ void Network::execute() {
 
 	while (choice != 0) {
 		//listen for tempSocket
-		std::cout << "Voulez vous recupérer les ids?" << std::endl;
-		std::cin >> choice;
+		system("pause");
 		Message msg(SEND_ID, GetCurrentProcessId(), 0);
 
 		if (msgRcv == -1) {
@@ -202,11 +186,12 @@ void Network::execute() {
 			if (next == -1)
 				msgRcv++;
 
-			std::cout << "next" << msgRcv << std::endl;
 			send_message(msg.bin, next);
-			std::cout << "previous" << std::endl;
 			send_message(msg.bin, previous);
 
+			if (msgRcv == 2) {
+				msgRcv = -1;
+			}
 		}
 	}
 }
@@ -215,9 +200,6 @@ void Network::send_message(const char* msg, SOCKET s) {
 	int iResult;
 
 	if (s != -1) {
-		
-		//std::cout << "Envoi de :";
-//		std::cout << msg << std::endl; // A supp
 		iResult = send(s, msg, (int)strlen(msg), 0);
 		if (iResult == SOCKET_ERROR) {
 			printf("send failed: %d\n", WSAGetLastError());
@@ -227,31 +209,28 @@ void Network::send_message(const char* msg, SOCKET s) {
 }
 
 void Network::reconnect_left_socket(SOCKET &s) {
+	std::cout << "Port d'ecoute n" << leftPort << " deconnecte" << std::endl;
+	std::cout << "Tentative de connexion au port d'ecoute n" << (leftPort - 1) << std::endl;
+
 	SOCKET aux = socket(AF_INET, SOCK_STREAM, 0);
 	leftPort --;
 	msgRcv = -1;
 
-	std::cout << "Reconnecting left : " << leftPort << "." << std::endl;
-
-	// Connect to previous
 	SOCKADDR_IN servSin;
 	inet_pton(AF_INET, "127.0.0.1", &(servSin.sin_addr));
 	servSin.sin_family = AF_INET;
 	servSin.sin_port = htons(leftPort);
 
-
-	while (connect(aux, (SOCKADDR *)&servSin, sizeof servSin) != 0) {
-		//std::cout << "Tentative de connexion a echoue" << std::endl;
-		//std::cout << WSAGetLastError() << std::endl;
-	}
-	std::cout << "Connecte a " << leftPort << std::endl;
+	while (connect(aux, (SOCKADDR *)&servSin, sizeof servSin) != 0);
+	std::cout << "Connecte au port d'ecoute n" << leftPort << std::endl;
 	s = aux;
 }
 
 void Network::reconnect_right_socket(SOCKET &s) {
 	msgRcv = -1;
 
-	std::cout << "Reconnecting right : " << leftPort << "." << std::endl;
+	std::cout << "Le noeud lie au port d'ecoute s'est deconnecte." << std::endl;
+	std::cout << "Tentative de reconnexion du port d'ecoute n" << rightPort << std::endl;
 
 	SOCKET tempSocket;
 
@@ -272,7 +251,7 @@ void Network::reconnect_right_socket(SOCKET &s) {
 	SOCKET aux;
 	while ((aux = accept(tempSocket, (SOCKADDR *)&clientSin, &sizeof_csin)) == INVALID_SOCKET);
 	s = aux;
-	std::cout << rightPort << " accepte" << std::endl;
+	std::cout << "Le port d'ecoute s'est connecte a un noeud" << std::endl;
 
 	closesocket(tempSocket);
 }
