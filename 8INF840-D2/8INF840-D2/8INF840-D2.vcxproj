@@ -144,9 +144,11 @@
   <ItemGroup>
     <ClCompile Include="HyperGraph.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PageRanker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HyperGraph.h" />
+    <ClInclude Include="PageRanker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

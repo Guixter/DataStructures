@@ -27,10 +27,16 @@
     <ClCompile Include="HyperGraph.cpp">
       <Filter>Source Files\Exercice2</Filter>
     </ClCompile>
+    <ClCompile Include="PageRanker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HyperGraph.h">
       <Filter>Header Files\Exercice2</Filter>
+    </ClInclude>
+    <ClInclude Include="PageRanker.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
