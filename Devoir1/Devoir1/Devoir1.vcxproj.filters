@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Exercice5">
       <UniqueIdentifier>{ab9af68b-2227-4482-b3bb-4b34d983caa4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Exercice4">
+      <UniqueIdentifier>{88fc0eb8-1134-4a78-913c-44351361d45d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice4">
+      <UniqueIdentifier>{b21d8722-0047-4924-8c26-f9d08af5b773}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -60,6 +66,12 @@
     <ClCompile Include="Network.cpp">
       <Filter>Source Files\Exercice5</Filter>
     </ClCompile>
+    <ClCompile Include="BinaryTree.cpp">
+      <Filter>Source Files\Exercice4</Filter>
+    </ClCompile>
+    <ClCompile Include="FamilyTree.cpp">
+      <Filter>Source Files\Exercice4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -79,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="Network.h">
       <Filter>Header Files\Exercice5</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTree.h">
+      <Filter>Header Files\Exercice4</Filter>
+    </ClInclude>
+    <ClInclude Include="FamilyTree.h">
+      <Filter>Header Files\Exercice4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -146,6 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryTree.cpp" />
+    <ClCompile Include="FamilyTree.cpp" />
     <ClCompile Include="Fabrique.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Dictionary.cpp" />
@@ -155,6 +157,8 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="FamilyTree.h" />
     <ClInclude Include="Fabrique.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Dictionary.h" />

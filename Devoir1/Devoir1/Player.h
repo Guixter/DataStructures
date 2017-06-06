@@ -1,6 +1,8 @@
 #pragma once
 #include "Pile.h"
 
+void launchCardGame();
+
 typedef struct Card {
 public:
 	Card(int val, int col, int bon) {
