@@ -36,39 +36,44 @@ template <typename T>
 class HyperGraph
 {
 public:
-	template <typename T> class Edge;
-	template <typename T> class Node;
+	class Edge;
+	class Node;
+
 	HyperGraph();
+
+	HyperGraph(Node* _racine) : racine(_racine) { };
 
 	~HyperGraph();
 
-	template <typename T>
 	class Node {
 	public:
 		Node(T _content) : content(_content) {  };
 
-		void addEdge(Edge<T>* edge) { edges.push_back(edge); };
+		void addEdge(Edge* edge) { edges.push_back(edge); };
+		std::vector<Edge*> getEdges() { return edges; };
 
 		T getContent() { return content; };
-		std::vector<Edge<T>*> getEdges() { return edges; };
+		void setContent(T _content) { content = _content; };
 
 	private:
 		T content;
-		std::vector<Edge<T>*> edges;
+		std::vector<Edge*> edges;
 	};
 
-	template <typename T>
 	class Edge {
 	public:
-		Edge(Node<T>* _in, Node<T>* _out) : setOut(_out) { setIn = new std::unordered_set<Node<T>*>(); setIn->insert(_in); };
-		void replaceSet(std::unordered_set<Node<T>*>* _set) { setIn->clear();  setIn = _set; };
+		Edge(Node* _in, Node* _out) : setIn(_in), setOut(_out) { /* setIn = new std::unordered_set<Node<T>*>(); setIn->insert(_in); */};
+		Node* getOut() { return setOut; };
 
 	private:
-		std::unordered_set<Node<T>*>* setIn;
-		Node<T>* setOut;
+		Node* setIn;
+		Node* setOut;
 		int id;
 	};
 
 private:
-	Node<T>* racine;
+	Node* racine;
 };
+
+typedef HyperGraph<Page>::Edge H_Edge;
+typedef HyperGraph<Page>::Node H_Node;

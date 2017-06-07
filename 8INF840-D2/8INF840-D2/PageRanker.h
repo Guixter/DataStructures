@@ -1,6 +1,10 @@
 #pragma once
 #include "HyperGraph.h"
 
+typedef std::unordered_set<H_Node*> NodeSet;
+typedef HyperGraph<NodeSet>::Node NodeSetNode;
+typedef HyperGraph<NodeSet>::Edge EdgeSetNode;
+
 class PageRanker
 {
 public:
@@ -11,6 +15,8 @@ public:
 	~PageRanker();
 
 private:
-	HyperGraph<Page>* content;
+	HyperGraph<Page>* contentA;
+	HyperGraph<NodeSet>* contentB;
+	HyperGraph<Page>* contentC;
 };
 
