@@ -58,7 +58,6 @@ void PageRanker::readNodes() {
 
 		//B
 		map<string, NodeSetNode*> setsHost;
-		vector<NodeSetNode*> nodesB;
 		string host;
 
 		for (map<int, H_Node*>::iterator it = nodes.begin(); it != nodes.end(); ++it)
@@ -90,10 +89,17 @@ void PageRanker::readNodes() {
 			}
 
 		}
-		NodeSetNode* p = setsHost.begin()->second;
 		contentB = new HyperGraph<NodeSet>(setsHost[host]);
 
 		//C
+		map<string, DomainNodeSetNode*> setsDomain;
+		string domain;
+
+		for (map<int, H_Node*>::iterator it = nodes.begin(); it != nodes.end(); ++it)
+		{
+			domain = it->second->getContent().getDomain();
+		}
+		contentC = new HyperGraph<DomainNodeSet>(setsDomain[host]);
 	}
 
 	myReadFile.close();

@@ -29,6 +29,11 @@ struct Page
 		std::getline(Line, urlHostF, '/');
 		return urlHostF;
 	}
+
+	std::string getDomain() {
+		std::string urlHostF = "";
+		return urlHostF;
+	}
 };
 
 

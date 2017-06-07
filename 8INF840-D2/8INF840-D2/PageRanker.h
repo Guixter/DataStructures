@@ -5,6 +5,13 @@ typedef std::unordered_set<H_Node*> NodeSet;
 typedef HyperGraph<NodeSet>::Node NodeSetNode;
 typedef HyperGraph<NodeSet>::Edge EdgeSetNode;
 
+struct DomainNodeSet {
+	std::unordered_set<NodeSetNode*> Element;
+};
+
+typedef HyperGraph<DomainNodeSet>::Node DomainNodeSetNode;
+typedef HyperGraph<DomainNodeSet>::Edge DomainEdgeSetNode;
+
 class PageRanker
 {
 public:
@@ -17,6 +24,6 @@ public:
 private:
 	HyperGraph<Page>* contentA;
 	HyperGraph<NodeSet>* contentB;
-	HyperGraph<Page>* contentC;
+	HyperGraph<DomainNodeSet>* contentC;
 };
 
