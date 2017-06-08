@@ -30,9 +30,26 @@ struct Page
 		return urlHostF;
 	}
 
+	std::string _trim(const std::string& str)
+	{
+		size_t start = str.find_first_not_of(" \n\r\t");
+		size_t until = str.find_last_not_of(" \n\r\t");
+		std::string::const_iterator i = start == std::string::npos ? str.begin() : str.begin() + start;
+		std::string::const_iterator x = until == std::string::npos ? str.end() : str.begin() + until + 1;
+		return std::string(i, x);
+	}
+
 	std::string getDomain() {
-		std::string urlHostF = "";
-		return urlHostF;
+		std::string x = _trim(url);
+		int offset = 0;
+		offset = offset == 0 && x.compare(0, 8, "https://") == 0 ? 8 : offset;
+		offset = offset == 0 && x.compare(0, 7, "http://") == 0 ? 7 : offset;
+		int pos1 = x.find_first_of('/', offset + 1);
+
+		std::string domain = std::string(x.begin() + offset, pos1 != std::string::npos ? x.begin() + pos1 : x.end());
+		int pos3 = domain.find(":");
+		domain = domain.substr(0, pos3 != std::string::npos ? pos3 : domain.length());
+		return domain;
 	}
 };
 

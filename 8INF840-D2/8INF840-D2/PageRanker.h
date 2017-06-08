@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include "HyperGraph.h"
 
 typedef std::unordered_set<H_Node*> NodeSet;
@@ -18,6 +19,7 @@ public:
 	PageRanker();
 
 	void readNodes();
+	std::map<std::string, NodeSetNode*> NodesToBloc(std::map<int, H_Node*> nodes, bool isHost);
 
 	~PageRanker();
 

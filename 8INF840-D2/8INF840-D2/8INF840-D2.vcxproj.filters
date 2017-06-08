@@ -28,7 +28,7 @@
       <Filter>Source Files\Exercice2</Filter>
     </ClCompile>
     <ClCompile Include="PageRanker.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Exercice2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +36,7 @@
       <Filter>Header Files\Exercice2</Filter>
     </ClInclude>
     <ClInclude Include="PageRanker.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Exercice2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

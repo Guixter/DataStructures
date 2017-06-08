@@ -9,15 +9,16 @@ void KdTree() {
 
 void PageRank() {
 	PageRanker* hyperGraph = new PageRanker();
-	hyperGraph->readNodes();
-/*	Page pp = Page(0, 0, "http://curia.eu.int/de/actu/communiques/cp97/cp9776de.htm");
-	std::cout << pp.getHost() << std::endl;*/
+	//hyperGraph->readNodes();
+	Page pp = Page(0, 0, "http://curia.eu.int/de/actu/communiques/cp97/cp9776de.htm");
+	std::cout << pp.getDomain() << std::endl;
 	int choice = -1;
 
 	while (choice != 0) {
 		cout << "------------------------" << endl;
-		cout << "? :" << endl << endl;
-		cout << "1 - Faire quelque chose :" << endl;
+		cout << "Que voulez vous faire :" << endl << endl;
+		cout << "1 - Construire l'hypergraphe depuis les fichiers :" << endl;
+		cout << "2 - ?" << endl;
 		cout << "0 - EXIT" << endl;
 
 		cin >> choice;
@@ -74,7 +75,6 @@ void menu() {
 		}
 	}
 }
-
 
 
 int main() {
