@@ -1,8 +1,11 @@
 #include <iostream>
+#include "SpacePartitioning.h"
+
 using namespace std;
 
 void KdTree() {
-
+	SpacePartitioning p;
+	p.launch();
 }
 
 void PageRank() {
@@ -52,7 +55,5 @@ void menu() {
 int main() {
 
 	menu();
-
-	system("PAUSE");
 	return 0;
 }

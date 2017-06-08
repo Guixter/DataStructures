@@ -30,12 +30,18 @@
     <ClCompile Include="KDTree.cpp">
       <Filter>Source Files\Exercice1</Filter>
     </ClCompile>
+    <ClCompile Include="SpacePartitioning.cpp">
+      <Filter>Source Files\Exercice1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryTree.h">
       <Filter>Header Files\Exercice1</Filter>
     </ClInclude>
     <ClInclude Include="KDTree.h">
+      <Filter>Header Files\Exercice1</Filter>
+    </ClInclude>
+    <ClInclude Include="SpacePartitioning.h">
       <Filter>Header Files\Exercice1</Filter>
     </ClInclude>
   </ItemGroup>
