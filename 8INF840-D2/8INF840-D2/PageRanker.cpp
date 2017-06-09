@@ -15,7 +15,7 @@ void PageRanker::readNodes() {
 	string outputLine;
 	string content;
 
-	map<int, H_Node*> nodes;
+	map<int, NodeSetNode*> nodes;
 	if (myReadFile.is_open()) {
 		std::getline(myReadFile, outputLine);
 		std::getline(myReadFile, outputLine);
@@ -27,13 +27,15 @@ void PageRanker::readNodes() {
 			std::getline(Line, content, ' ');
 			int outdegree = stoi(content);
 			std::getline(Line, content, ' ');
-			nodes.insert(std::pair<int, H_Node*>(id, new H_Node(Page(id, outdegree, content))));
+			NodeSet nodeSet = NodeSet();
+			nodeSet.insert(new H_Node(Page(id, outdegree, content)));
+			nodes.insert(std::pair<int, NodeSetNode*>(id, new NodeSetNode(nodeSet)));
 						std::cout << content << std::endl;
 		}
 
 		//A
 		ifstream myReadFile2("Content/eu-2005.edges.txt");
-		std::vector<H_Edge*> edges;
+		std::vector<EdgeSetNode*> edges;
 		if (myReadFile2.is_open()) {
 			std::getline(myReadFile, outputLine);
 			std::getline(myReadFile, outputLine);
@@ -46,12 +48,12 @@ void PageRanker::readNodes() {
 				int outnode = stoi(content);
 
 				if (nodes.find(innode) == nodes.end() && nodes.find(outnode) == nodes.end()) {
-					edges.push_back(new H_Edge(nodes[innode], nodes[outnode]));
+					edges.push_back(new EdgeSetNode(nodes[innode], nodes[outnode]));
 					nodes[innode]->addEdge(edges[edges.size() - 1]);
 				}
 			}
 
-			contentA = new HyperGraph<Page>(nodes[0]);
+			contentA = new HyperGraph<NodeSet>(nodes[0]);
 			std::cout << "Fin de l'ajout des edges" << std::endl;
 		}
 
@@ -66,18 +68,28 @@ void PageRanker::readNodes() {
 	myReadFile.close();
 }
 
-map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, H_Node*> nodes, bool isHost) {
+H_Node* PageRanker::getNodeFromSet(NodeSetNode* set) {
+	H_Node* element;
+	for (NodeSet::iterator i = set->getContent().begin(); i != set->getContent().end(); i++) {
+		element = *i;
+	}
+	return element;
+}
+
+
+map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, NodeSetNode*> nodes, bool isHost) {
 	map<string, NodeSetNode*> setsHost;
 	string host;
-	for (map<int, H_Node*>::iterator it = nodes.begin(); it != nodes.end(); ++it)
+	for (map<int, NodeSetNode*>::iterator it = nodes.begin(); it != nodes.end(); ++it)
 	{
 		//Bloc
-		host = isHost ? it->second->getContent().getHost() : it->second->getContent().getDomain();
+		H_Node* nodeSet = getNodeFromSet(it->second);
+		host = isHost ? nodeSet->getContent().getHost() : nodeSet->getContent().getDomain();
 		if (setsHost.find(host) == setsHost.end()) {
 			setsHost.insert(std::pair<string, NodeSetNode*>(host, new NodeSetNode(NodeSet())));
 		}
-		setsHost[host]->getContent().insert(it->second); // Insert currrent Node Page in the right set
-		for (HyperGraph<Page>::Edge* edgeNode : it->second->getEdges())
+		setsHost[host]->getContent().insert(nodeSet); // Insert currrent Node Page in the right set
+		for (HyperGraph<Page>::Edge* edgeNode : nodeSet->getEdges())
 		{
 			if (edgeNode->getOut()->getContent().getHost() != host) {
 				bool already = false;
