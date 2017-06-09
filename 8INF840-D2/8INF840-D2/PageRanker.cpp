@@ -58,10 +58,10 @@ void PageRanker::readNodes() {
 		}
 
 		//Host
-		NodesToBloc(nodes, true);
+		contentB->setContent(mapToVector(NodesToBloc(nodes, true)));
 
 		//Domain
-		NodesToBloc(nodes, false);
+		contentC->setContent(mapToVector(NodesToBloc(nodes, false)));
 	}
 
 	system("PAUSE");
@@ -76,6 +76,13 @@ H_Node* PageRanker::getNodeFromSet(NodeSetNode* set) {
 	return element;
 }
 
+std::vector<NodeSetNode*> PageRanker::mapToVector(std::map<std::string, NodeSetNode*> mapNodes) {
+	std::vector<NodeSetNode*> nodes;
+	for (std::map<std::string, NodeSetNode*>::iterator it = mapNodes.begin(); it != mapNodes.end(); ++it) {
+		nodes.push_back(it->second);
+	}
+	return nodes;
+}
 
 map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, NodeSetNode*> nodes, bool isHost) {
 	map<string, NodeSetNode*> setsHost;
@@ -110,7 +117,12 @@ map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, NodeSetNode*> nodes, 
 		}
 
 	}
-	contentB = new HyperGraph<NodeSet>(setsHost[host]);
+	if (isHost) {
+		contentB = new HyperGraph<NodeSet>(setsHost[host]);
+	}
+	else {
+		contentC = new HyperGraph<NodeSet>(setsHost[host]);
+	}
 	return setsHost;
 }
 

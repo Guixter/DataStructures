@@ -64,6 +64,7 @@ public:
 	HyperGraph();
 
 	HyperGraph(Node* _racine) : racine(_racine) { };
+	void setContent(std::vector<Node*> _arrayNodes) { arrayNodes = _arrayNodes; };
 
 	~HyperGraph();
 
@@ -77,9 +78,13 @@ public:
 		T getContent() { return content; };
 		void setContent(T _content) { content = _content; };
 
+		int getWeight() { return weight; };
+		void setWeight(int _weight) { weight = _weight; };
+
 	private:
 		T content;
 		std::vector<Edge*> edges;
+		int weight;
 	};
 
 	class Edge {
@@ -95,6 +100,7 @@ public:
 
 private:
 	Node* racine;
+	std::vector<Node*> arrayNodes;
 };
 
 typedef HyperGraph<Page>::Edge H_Edge;

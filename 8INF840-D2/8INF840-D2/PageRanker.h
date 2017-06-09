@@ -14,6 +14,7 @@ public:
 	void readNodes();
 	std::map<std::string, NodeSetNode*> NodesToBloc(std::map<int, NodeSetNode*> nodes, bool isHost);
 	H_Node* getNodeFromSet(NodeSetNode* set);
+	std::vector<NodeSetNode*> mapToVector(std::map<std::string, NodeSetNode*> mapNodes);
 
 	~PageRanker();
 
