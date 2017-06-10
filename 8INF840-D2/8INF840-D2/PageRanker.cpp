@@ -11,12 +11,14 @@ PageRanker::PageRanker()
 }
 
 void PageRanker::readNodes() {
-	//ifstream myReadFile("Content/testNodes.txt");
-	ifstream myReadFile("Content/eu-2005.nodes.txt");
+
+	ifstream myReadFile("Content/testNodes.txt");
+	//ifstream myReadFile("Content/eu-2005.nodes.txt");
 	string outputLine;
 	string content;
 
 	map<int, NodeSetNode*> nodes;
+
 	if (myReadFile.is_open()) {
 		std::getline(myReadFile, outputLine);
 		std::getline(myReadFile, outputLine);
@@ -31,12 +33,12 @@ void PageRanker::readNodes() {
 			NodeSet nodeSet = NodeSet();
 			nodeSet.insert(new H_Node(Page(id, outdegree, content)));
 			nodes.insert(std::pair<int, NodeSetNode*>(id, new NodeSetNode(nodeSet)));
-						std::cout << content << std::endl;
+						//std::cout << content << std::endl;
 		}
-
+		std::cout << nodes.size() << endl;
 		//A
-		//ifstream myReadFile2("Content/testEdges.txt");
-		ifstream myReadFile2("Content/eu-2005.edges.txt");
+		ifstream myReadFile2("Content/testEdges.txt");
+		//ifstream myReadFile2("Content/eu-2005.edges.txt");
 		std::vector<EdgeSetNode*> edges;
 		if (myReadFile2.is_open()) {
 			std::getline(myReadFile, outputLine);
@@ -66,6 +68,7 @@ void PageRanker::readNodes() {
 		contentC->setContent(mapToVector(NodesToBloc(nodes, false)));
 	}
 
+	std::cout << "euh" << endl;
 	system("PAUSE");
 	myReadFile.close();
 }

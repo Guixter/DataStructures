@@ -20,6 +20,8 @@ public:
 	static void Indegree(HyperGraph<NodeSet> &hg);
 	static void PageRank(HyperGraph<NodeSet> &hg);
 
+	HyperGraph<NodeSet>* debug() { return contentA; };
+
 	~PageRanker();
 
 private:
