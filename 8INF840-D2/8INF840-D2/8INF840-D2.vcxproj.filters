@@ -27,9 +27,15 @@
     <ClCompile Include="Graph.cpp">
       <Filter>Source Files\Exercice3</Filter>
     </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Source Files\Exercice3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graph.h">
+      <Filter>Header Files\Exercice3</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
       <Filter>Header Files\Exercice3</Filter>
     </ClInclude>
   </ItemGroup>

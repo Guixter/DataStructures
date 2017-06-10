@@ -8,50 +8,61 @@
 template <typename T>
 class Graph {
 public:
+	class Node;
+
+	// The edge class
+	class Edge {
+	public:
+		Node* source;
+		Node* target;
+		float weight;
+
+		Edge(Node* source, Node* target, float weight) : source(source), target(target), weight(weight) { }
+
+		friend class Graph<T>;
+	};
 
 	// The node class, containing the data
 	class Node {
 	public:
+		~Node() {
+			for (int i = 0; i < edges.size(); i++) {
+				delete edges[edges.size() - i - 1];
+				edges.erase(edges.begin() + (edges.size() - 1));
+			}
+		}
+
 		T getData() const {
 			return this->data;
 		}
 
-		Node* getParent() const {
-			return this->parent;
+		int getNbEdges() const {
+			return edges.size();
 		}
 
-		int getNbChildren() const {
-			return children.size();
-		}
-
-		Node* getChild(int index) const throw (std::logic_error) {
-			if (index >= children.size()) {
+		Edge* getEdge(int index) const throw (std::logic_error) {
+			if (index >= edges.size()) {
 				throw std::logic_error("Bad index.");
 			}
 
-			return children[index];
+			return edges[index];
 		}
 
 		void setData(T elt) {
 			this->data = elt;
 		}
 
-		void setParent(Node* newParent) {
-			this->parent = newParent;
+		void addEdge(Edge* edge) {
+			edges.insert(edges.begin(), edge);
 		}
 
-		void addChild(Node* child) {
-			children.insert(child);
-		}
+		Node(T data) : data(data), edges(), tag(false) { }
 
-		Node(T data) : data(data), parent(NULL), children() { }
-
-		friend Graph<T>;
+		friend class Graph<T>;
 
 	private:
 		T data;
-		std::vector<Node*> children;
-		Node* parent;
+		std::vector<Edge*> edges;
 		bool tag;
 	};
 
@@ -72,12 +83,14 @@ public:
 	// Add a node to the graph
 	Node* addNode(T data);
 	// Add an edge between two nodes of the graph
-	void addEdge(Node* n1, Node* n2);
+	Edge* addEdge(Node* source, Node* target, float weight = 1);
 
 	// Apply a function in each node, with the BFS traversal
 	void applyBreadthFirst(std::function<void(Node* n)> f, Node* source);
 	// Apply a function in each node, with the DFS traversal
 	void applyDepthFirst(std::function<void(Node* n)> f, Node* source);
+	// Apply a function in each node
+	void applyNodes(std::function<void(Node* n)> f);
 
 private:
 	std::vector<Node*> nodes;
@@ -87,6 +100,9 @@ private:
 
 template <typename T>
 using GNode = typename Graph<T>::Node;
+
+template <typename T>
+using GEdge = typename Graph<T>::Edge;
 
 /////////////////////////////////
 
@@ -135,15 +151,16 @@ GNode<T>* Graph<T>::search(T elt) const {
 template <typename T>
 GNode<T>* Graph<T>::addNode(T data) {
 	Node* n = new Node(data);
-	nodes.insert(data);
+	nodes.insert(nodes.end(), n);
 	return n;
 }
 
 // Add an edge between two nodes
 template <typename T>
-void Graph<T>::addEdge(Node* n1, Node* n2) {
-	n1->children.add(n2);
-	n2->children.add(n1);
+GEdge<T>* Graph<T>::addEdge(Node* source, Node* target, float weight) {
+	Edge* e = new Edge(source, target, weight);
+	source->addEdge(e);
+	return e;
 }
 
 /////////////////////////////////
@@ -156,14 +173,13 @@ void Graph<T>::applyDepthFirst(std::function<void(Node* n)> f, Node* source) {
 	std::stack<Node*> *stack = new std::stack<Node*>();
 	stack->push(source);
 	while (!stack->empty()) {
-		Node *n = stack->pop();
-		if (n != NULL) {
+		Node *n = stack->top();
+		stack->pop();
+		if (n != NULL && !(n->tag)) {
+			n->tag = true;
 			f(n);
-			for (int i = 0; i < n->nbChildren(); i++) {
-				if (!(n->tag)) {
-					stack->push(n->getChild(i));
-					n->tag = true;
-				}
+			for (int i = 0; i < n->getNbEdges(); i++) {
+				stack->push(n->getEdge(i)->target);
 			}
 		}
 	}
@@ -177,14 +193,13 @@ void Graph<T>::applyBreadthFirst(std::function<void(Node* n)> f, Node* source) {
 	std::queue<Node*> *queue = new std::queue<Node*>();
 	queue->push(source);
 	while (!queue->empty()) {
-		Node *n = queue->pop();
-		if (n != NULL) {
+		Node *n = queue->front();
+		queue->pop();
+		if (n != NULL && !(n->tag)) {
+			n->tag = true;
 			f(n);
-			for (int i = 0; i < n->nbChildren(); i++) {
-				if (!(n->tag)) {
-					queue->push(n->getChild(i));
-					n->tag = true;
-				}
+			for (int i = 0; i < n->getNbEdges(); i++) {
+				queue->push(n->getEdge(i)->target);
 			}
 		}
 	}
@@ -195,5 +210,13 @@ template <typename T>
 void Graph<T>::_resetTags() {
 	for (int i = 0; i < nodes.size(); i++) {
 		nodes[i]->tag = false;
+	}
+}
+
+// Apply a function in each node
+template <typename T>
+void Graph<T>::applyNodes(std::function<void(Node* n)> f) {
+	for (int i = 0; i < nodes.size(); i++) {
+		f(nodes[i]);
 	}
 }
