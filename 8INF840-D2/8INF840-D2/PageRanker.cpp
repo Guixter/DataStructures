@@ -69,13 +69,21 @@ void PageRanker::readNodes() {
 map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, H_Node*> nodes, bool isHost) {
 	map<string, NodeSetNode*> setsHost;
 	string host;
+
+	//comment faire pour qu'ils ne soient pas supprimes en sortant de la fonction?
+	//vector<NodeSetNode*> blocs;
+
 	for (map<int, H_Node*>::iterator it = nodes.begin(); it != nodes.end(); ++it)
 	{
 		//Bloc
 		host = isHost ? it->second->getContent().getHost() : it->second->getContent().getDomain();
+
+		//if bloc doesnt already exists, create it
 		if (setsHost.find(host) == setsHost.end()) {
 			setsHost.insert(std::pair<string, NodeSetNode*>(host, new NodeSetNode(NodeSet())));
+			
 		}
+
 		setsHost[host]->getContent().insert(it->second); // Insert currrent Node Page in the right set
 		for (HyperGraph<Page>::Edge* edgeNode : it->second->getEdges())
 		{
@@ -102,6 +110,27 @@ map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, H_Node*> nodes, bool 
 	return setsHost;
 }
 
+void PageRanker::Indegree(HyperGraph<Page> &pagesToRank) {
+	//pour chaque bloc
+	//pour chaque arrete partant du bloc
+	//ajouter 1 a la page cible
+	vector<HyperGraph<Page>::Bloc> blocs = pagesToRank.getBlocs();
+	for(vector<HyperGraph<Page>::Bloc>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
+	{
+		vector<HyperGraph<Page>::Edge*> edges = curBloc->getEdge();
+		for (vector<HyperGraph<Page>::Edge*>::iterator curEdge = edges.begin(); curEdge != edges.end(); ++curEdge) 
+		{
+			Page pointed = (*curEdge)->getOut()->getContent();
+			pointed.weight += 1;
+		}
+		
+	}
+	
+}
+
+void PageRanker::PageRank(HyperGraph<Page> &pagesToRank) {
+
+}
 
 PageRanker::~PageRanker()
 {

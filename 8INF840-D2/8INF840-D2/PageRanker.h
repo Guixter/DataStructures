@@ -21,6 +21,10 @@ public:
 	void readNodes();
 	std::map<std::string, NodeSetNode*> NodesToBloc(std::map<int, H_Node*> nodes, bool isHost);
 
+	//pour le graphe de base
+	static void Indegree(HyperGraph<Page> &pagesToRank);
+	static void PageRank(HyperGraph<Page> &pagesToRank);
+
 	~PageRanker();
 
 private:

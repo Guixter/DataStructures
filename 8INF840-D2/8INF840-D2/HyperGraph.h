@@ -65,6 +65,8 @@ public:
 
 	HyperGraph(Node* _racine) : racine(_racine) { };
 
+	HyperGraph(Node* _racine, std::vector<Bloc> _blocs) : blocs(_blocs) , racine(_racine) { };
+
 	~HyperGraph();
 
 	class Node {
@@ -82,6 +84,22 @@ public:
 		std::vector<Edge*> edges;
 	};
 
+	class Bloc {
+	public:
+		void addVertex(Node &node) { vertex.push_back(node); }
+		void addEdge(Edge &edge) { out_edges.push_back(edge); }
+		vector<Node*> getVertex() { return vertex; }
+		vector<Edge*> getEdge() { return out_edges; }
+
+
+	private:
+
+		std::vector<Node*> vertex;
+		std::vector<Edge*> out_edges;
+
+	};
+	
+
 	class Edge {
 	public:
 		Edge(Node* _in, Node* _out) : setIn(_in), setOut(_out) { /* setIn = new std::unordered_set<Node<T>*>(); setIn->insert(_in); */};
@@ -93,8 +111,10 @@ public:
 		int id;
 	};
 
+	std::vector<Bloc> getBlocs() { return blocs; }
 private:
 	Node* racine;
+	std::vector<Bloc> blocs;
 };
 
 typedef HyperGraph<Page>::Edge H_Edge;
