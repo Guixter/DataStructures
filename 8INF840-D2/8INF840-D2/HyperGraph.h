@@ -7,10 +7,10 @@
 struct Page
 {
 	int id;
-	int weight;
+	double weight;
 	std::string url;
 
-	Page(int _id, int _weight, std::string _url) : id(_id), weight(_weight), url(_url) {
+	Page(int _id, double _weight, std::string _url) : id(_id), weight(_weight), url(_url) {
 		
 	}
 
@@ -65,6 +65,7 @@ public:
 
 	HyperGraph(Node* _racine) : racine(_racine) { };
 	void setContent(std::vector<Node*> _arrayNodes) { arrayNodes = _arrayNodes; };
+	std::vector<Node*> getNodes() { return arrayNodes; }
 
 	~HyperGraph();
 
@@ -78,13 +79,13 @@ public:
 		T getContent() { return content; };
 		void setContent(T _content) { content = _content; };
 
-		int getWeight() { return weight; };
-		void setWeight(int _weight) { weight = _weight; };
+		double getWeight() { return weight; };
+		void setWeight(double _weight) { weight = _weight; };
 
 	private:
 		T content;
 		std::vector<Edge*> edges;
-		int weight;
+		double weight;
 	};
 
 	class Edge {

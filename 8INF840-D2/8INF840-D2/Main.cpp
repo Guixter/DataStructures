@@ -9,9 +9,10 @@ void KdTree() {
 
 void PageRank() {
 	PageRanker* hyperGraph = new PageRanker();
-	//hyperGraph->readNodes();
+	hyperGraph->readNodes();
 	Page pp = Page(0, 0, "http://curia.eu.int/de/actu/communiques/cp97/cp9776de.htm");
 	std::cout << pp.getDomain() << std::endl;
+
 	int choice = -1;
 
 	while (choice != 0) {
