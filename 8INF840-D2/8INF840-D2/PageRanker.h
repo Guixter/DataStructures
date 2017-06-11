@@ -9,6 +9,7 @@ typedef HyperGraph<NodeSet>::Edge EdgeSetNode;
 class PageRanker
 {
 public:
+	//static const double df = 0.85;
 
 	PageRanker();
 

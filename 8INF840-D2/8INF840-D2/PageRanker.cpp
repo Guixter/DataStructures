@@ -120,20 +120,20 @@ HyperGraph<NodeSet> PageRanker::create() {
 	nodes.push_back(&node4);
 
 	// 12
-	EdgeSetNode edge12 = EdgeSetNode(&node1, &node2);
-	node1.addEdge(&edge12);
+	EdgeSetNode* edge12 = new EdgeSetNode(&node1, &node2);
+	node1.addEdge(edge12);
 	// 13
-	EdgeSetNode edge13 = EdgeSetNode(&node1, &node3);
-	node1.addEdge(&edge13);
+	EdgeSetNode* edge13 = new EdgeSetNode(&node1, &node3);
+	node1.addEdge(edge13);
 	// 23
-	EdgeSetNode edge23 = EdgeSetNode(&node2, &node3);
-	node2.addEdge(&edge23);
+	EdgeSetNode* edge23 = new EdgeSetNode(&node2, &node3);
+	node2.addEdge(edge23);
 	// 31
-	EdgeSetNode edge31 = EdgeSetNode(&node3, &node1);
-	node3.addEdge(&edge31);
+	EdgeSetNode* edge31 = new EdgeSetNode(&node3, &node1);
+	node3.addEdge(edge31);
 	// 43
-	EdgeSetNode edge43 = EdgeSetNode(&node4, &node3);
-	node4.addEdge(&edge43);
+	EdgeSetNode* edge43 = new EdgeSetNode(&node4, &node3);
+	node4.addEdge(edge43);
 
 	HyperGraph<NodeSet>* hg = new HyperGraph<NodeSet>(&node1);
 	hg->setContent(nodes);
