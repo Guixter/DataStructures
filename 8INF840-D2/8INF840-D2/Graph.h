@@ -4,10 +4,13 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <limits>
 
 template <typename T>
 class Graph {
 public:
+	static float MAX_FLOAT;
+
 	class Node;
 
 	// The edge class
@@ -53,10 +56,18 @@ public:
 		}
 
 		void addEdge(Edge* edge) {
-			edges.insert(edges.begin(), edge);
+			edges.push_back(edge);
 		}
 
-		Node(T data) : data(data), edges(), tag(false) { }
+		float getDistance() const {
+			return distance;
+		}
+
+		Edge* getLastEdge() const {
+			return lastEdge;
+		}
+
+		Node(T data) : data(data), edges(), tag(false), distance(MAX_FLOAT), lastEdge(NULL) { }
 
 		friend class Graph<T>;
 
@@ -64,6 +75,10 @@ public:
 		T data;
 		std::vector<Edge*> edges;
 		bool tag;
+
+		// Some shortest path data
+		float distance;
+		Edge* lastEdge;
 	};
 
 	/////////////////////////////////
@@ -92,6 +107,9 @@ public:
 	// Apply a function in each node
 	void applyNodes(std::function<void(Node* n)> f);
 
+	// Apply the Dijkstra algorithm
+	void dijkstra(Node* source);
+
 private:
 	std::vector<Node*> nodes;
 
@@ -103,6 +121,9 @@ using GNode = typename Graph<T>::Node;
 
 template <typename T>
 using GEdge = typename Graph<T>::Edge;
+
+template <typename T>
+float Graph<T>::MAX_FLOAT = std::numeric_limits<float>::max();
 
 /////////////////////////////////
 
@@ -151,7 +172,7 @@ GNode<T>* Graph<T>::search(T elt) const {
 template <typename T>
 GNode<T>* Graph<T>::addNode(T data) {
 	Node* n = new Node(data);
-	nodes.insert(nodes.end(), n);
+	nodes.push_back(n);
 	return n;
 }
 
@@ -218,5 +239,44 @@ template <typename T>
 void Graph<T>::applyNodes(std::function<void(Node* n)> f) {
 	for (int i = 0; i < nodes.size(); i++) {
 		f(nodes[i]);
+	}
+}
+
+/////////////////////////////////
+
+// Apply Dijkstra
+template <typename T>
+void Graph<T>::dijkstra(Node* source) {
+	// Initialization
+	for (int i = 0; i < nodes.size(); i++) {
+		nodes[i]->distance = MAX_FLOAT;
+	}
+	source->distance = 0;
+
+	std::vector<Node*> v(nodes);
+	while (v.size() > 0) {
+		// Find the minimum
+		int index = 0;
+		Node* n = v[index];
+		for (int i = 1; i < v.size(); i++) {
+			if (v[i]->distance < n->distance) {
+				index = i;
+				n = v[index];
+			}
+		}
+
+		// Remove it from the list
+		v.erase(v.begin() + index);
+
+		// For all the neighbours
+		for (int i = 0; i < n->getNbEdges(); i++) {
+			// Update the distance of the neighbour
+			Edge* e = n->getEdge(i);
+			Node* neighbour = e->target;
+			if (neighbour->distance > (n->distance + e->weight)) {
+				neighbour->distance = (n->distance + e->weight);
+				neighbour->lastEdge = e;
+			}
+		}
 	}
 }
