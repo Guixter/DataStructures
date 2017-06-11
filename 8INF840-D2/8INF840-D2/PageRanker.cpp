@@ -35,15 +35,14 @@ void PageRanker::readNodes() {
 			nodes.insert(std::pair<int, NodeSetNode*>(id, new NodeSetNode(nodeSet)));
 						//std::cout << content << std::endl;
 		}
-		std::cout << nodes.size() << endl;
 		//A
 		ifstream myReadFile2("Content/testEdges.txt");
 		//ifstream myReadFile2("Content/eu-2005.edges.txt");
 		std::vector<EdgeSetNode*> edges;
 		if (myReadFile2.is_open()) {
-			std::getline(myReadFile, outputLine);
-			std::getline(myReadFile, outputLine);
-			while (std::getline(myReadFile, outputLine)) {
+			std::getline(myReadFile2, outputLine);
+			std::getline(myReadFile2, outputLine);
+			while (std::getline(myReadFile2, outputLine)) {
 				std::stringstream Line(outputLine);
 
 				std::getline(Line, content, ' ');
@@ -68,7 +67,6 @@ void PageRanker::readNodes() {
 		contentC->setContent(mapToVector(NodesToBloc(nodes, false)));
 	}
 
-	std::cout << "euh" << endl;
 	system("PAUSE");
 	myReadFile.close();
 }
@@ -88,6 +86,61 @@ std::vector<NodeSetNode*> PageRanker::mapToVector(std::map<std::string, NodeSetN
 	}
 	return nodes;
 }
+
+HyperGraph<NodeSet> PageRanker::create() {
+
+	std::vector<NodeSetNode*> nodes;
+
+
+	//noeud 1
+	NodeSet nodeSet1 = NodeSet();
+	nodeSet1.insert(new H_Node(Page(1, 2, "http://de.osha.eu.int/de/print/")));
+	NodeSetNode node1 = NodeSetNode(nodeSet1);
+	nodes.push_back(&node1);
+
+
+	//noeud 2
+	NodeSet nodeSet2 = NodeSet();
+	nodeSet2.insert(new H_Node(Page(1, 2, "http://de.osha.eu.int/de/print/statistics/EW2002_IBM_Massnahmen_gegen_Stress_am_Arbeitsplatz.php")));
+	NodeSetNode node2 = NodeSetNode(nodeSet2);
+	nodes.push_back(&node2);
+
+
+	//noeud 3
+	NodeSet nodeSet3 = NodeSet();
+	nodeSet3.insert(new H_Node(Page(1, 2, "http://euro.eu.int/")));
+	NodeSetNode node3 = NodeSetNode(nodeSet3);
+	nodes.push_back(&node3);
+
+
+	//noeud 4
+	NodeSet nodeSet4 = NodeSet();
+	nodeSet4.insert(new H_Node(Page(1, 2, "http://biodiversity.eionet.eu.int/")));
+	NodeSetNode node4 = NodeSetNode(nodeSet4);
+	nodes.push_back(&node4);
+
+	// 12
+	EdgeSetNode edge12 = EdgeSetNode(&node1, &node2);
+	node1.addEdge(&edge12);
+	// 13
+	EdgeSetNode edge13 = EdgeSetNode(&node1, &node3);
+	node1.addEdge(&edge13);
+	// 23
+	EdgeSetNode edge23 = EdgeSetNode(&node2, &node3);
+	node2.addEdge(&edge23);
+	// 31
+	EdgeSetNode edge31 = EdgeSetNode(&node3, &node1);
+	node3.addEdge(&edge31);
+	// 43
+	EdgeSetNode edge43 = EdgeSetNode(&node4, &node3);
+	node4.addEdge(&edge43);
+
+	HyperGraph<NodeSet>* hg = new HyperGraph<NodeSet>(&node1);
+	hg->setContent(nodes);
+
+	return *hg;
+
+};
 
 map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, NodeSetNode*> nodes, bool isHost) {
 	map<string, NodeSetNode*> setsHost;
@@ -131,63 +184,97 @@ map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, NodeSetNode*> nodes, 
 	return setsHost;
 }
 
-void PageRanker::Indegree(HyperGraph<NodeSet> &hg) {
+void PageRanker::Indegree(HyperGraph<NodeSet>* hg) {
 	//!!!!mettre le poids de toutes les pages a 0!!!!
 
-	//pour chaque bloc
-	//pour chaque arrete sortante
-	//ajouter 1 a la cible
-	std::vector<HyperGraph<NodeSet>::Node*> blocs = hg.getNodes();
-	for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
-	{
-		std::vector<HyperGraph<NodeSet>::Edge*> edges = (*curBloc)->getEdges();
-		for (vector<HyperGraph<NodeSet>::Edge*>::iterator curEdge = edges.begin(); curEdge != edges.end(); ++curEdge)
-		{
-			NodeSet targettedSet = (*curEdge)->getOut()->getContent();
-			H_Node *const node = *(targettedSet.begin());
-
-			Page p = node->getContent();
-			p.weight += 1.0;
-		}
-	}
-}
-void PageRanker::PageRank(HyperGraph<NodeSet> &hg) {
-
-	//!!!!mettre le poids de toutes les pages a 1!!!!
-	double df = 0.85;
-
-	//pour chaque bloc
-	//calculer note du bloc, somme des notes des pages
-	//mettre les notes des pages a 1 - df
-
-	std::vector<HyperGraph<NodeSet>::Node*> blocs = hg.getNodes();
+	std::vector<HyperGraph<NodeSet>::Node*> blocs = hg->getNodes();
 	for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
 	{
 		NodeSet set = (*curBloc)->getContent();
 		for (NodeSet::iterator curNode = set.begin(); curNode != set.end(); curNode++)
 		{
 			Page p = (*curNode)->getContent();
-			(*curBloc)->setWeight((*curBloc)->getWeight() + p.weight);
-			p.weight = 1.0 - df;
+			Page newPage = Page(p.id, 0.0, p.url);
+			(*curNode)->setContent(newPage);
+			//p.weight = 0.0;
 		}
 	}
 
-
 	//pour chaque bloc
 	//pour chaque arrete sortante
-	//ajouter df * note du bloc / nb arcs sortants a la note de la page cible
+	//ajouter 1 a la cible
 	for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
 	{
 		std::vector<HyperGraph<NodeSet>::Edge*> edges = (*curBloc)->getEdges();
-		int outDegree = edges.size();
-		double blocWeight = (*curBloc)->getWeight();
 		for (vector<HyperGraph<NodeSet>::Edge*>::iterator curEdge = edges.begin(); curEdge != edges.end(); ++curEdge)
 		{
 			NodeSet targettedSet = (*curEdge)->getOut()->getContent();
 			H_Node *const node = *(targettedSet.begin());
-			Page p = node->getContent();
 
-			p.weight += df * blocWeight / outDegree;
+			Page p = node->getContent();
+			Page newPage = Page(p.id, p.weight + 1.0, p.url);
+			node->setContent(newPage);
+			//p.weight += 1.0;
+		}
+	}
+}
+void PageRanker::PageRank(HyperGraph<NodeSet>* hg, int maxIter) {
+
+	double df = 0.85;
+
+	std::vector<HyperGraph<NodeSet>::Node*> blocs = hg->getNodes();
+	for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
+	{
+		NodeSet set = (*curBloc)->getContent();
+		for (NodeSet::iterator curNode = set.begin(); curNode != set.end(); curNode++)
+		{
+			Page p = (*curNode)->getContent();
+			Page newPage = Page(p.id, 1.0, p.url);
+			(*curNode)->setContent(newPage);
+		}
+	}
+
+	int nbIter = 0;
+	while (nbIter <= maxIter)
+	{
+		nbIter++;
+
+		//pour chaque bloc
+		//calculer note du bloc, somme des notes des pages
+		//mettre les notes des pages a 1 - df
+
+		for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
+		{
+			NodeSet set = (*curBloc)->getContent();
+			(*curBloc)->setWeight(0.0);
+			for (NodeSet::iterator curNode = set.begin(); curNode != set.end(); curNode++)
+			{
+				Page p = (*curNode)->getContent();
+				(*curBloc)->setWeight((*curBloc)->getWeight() + p.weight);
+
+				Page newPage = Page(p.id, 1.0 - df, p.url);
+				(*curNode)->setContent(newPage);
+				//p.weight = 1.0 - df;
+			}
+		}
+
+
+		//pour chaque bloc
+		//pour chaque arrete sortante
+		//ajouter df * note du bloc / nb arcs sortants a la note de la page cible
+		for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
+		{
+			std::vector<HyperGraph<NodeSet>::Edge*> edges = (*curBloc)->getEdges();
+			int outDegree = edges.size();
+			double blocWeight = (*curBloc)->getWeight();
+			for (vector<HyperGraph<NodeSet>::Edge*>::iterator curEdge = edges.begin(); curEdge != edges.end(); ++curEdge)
+			{
+				NodeSet targettedSet = (*curEdge)->getOut()->getContent();
+				H_Node *const node = *(targettedSet.begin());
+				Page p = node->getContent();
+				Page newPage = Page(p.id, p.weight + df * blocWeight / outDegree, p.url);
+				node->setContent(newPage);
+			}
 		}
 	}
 }

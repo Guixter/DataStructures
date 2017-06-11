@@ -9,7 +9,7 @@ typedef HyperGraph<NodeSet>::Edge EdgeSetNode;
 class PageRanker
 {
 public:
-	
+
 	PageRanker();
 
 	void readNodes();
@@ -17,8 +17,10 @@ public:
 	H_Node* getNodeFromSet(NodeSetNode* set);
 	std::vector<NodeSetNode*> mapToVector(std::map<std::string, NodeSetNode*> mapNodes);
 
-	static void Indegree(HyperGraph<NodeSet> &hg);
-	static void PageRank(HyperGraph<NodeSet> &hg);
+	HyperGraph<NodeSet> create();
+
+	static void Indegree(HyperGraph<NodeSet>* hg);
+	static void PageRank(HyperGraph<NodeSet>* hg, int maxIter);
 
 	HyperGraph<NodeSet>* debug() { return contentA; };
 
