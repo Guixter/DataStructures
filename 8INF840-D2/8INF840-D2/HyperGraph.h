@@ -71,9 +71,10 @@ public:
 
 	class Node {
 	public:
-		Node(T _content) : content(_content) {  };
+		Node(T _content) : content(_content) { edges.reserve(1); };
 
 		void addEdge(Edge* edge) { edges.push_back(edge); };
+		void addEdge(Node* node) { edges.push_back(new Edge(this, node)); };
 		std::vector<Edge*> getEdges() { return edges; };
 
 		T getContent() { return content; };

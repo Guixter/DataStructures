@@ -9,7 +9,7 @@ void KdTree() {
 
 void PageRank() {
 	PageRanker* pr = new PageRanker();
-	//hyperGraph->readNodes();
+	pr->readNodes();
 	//Page pp = Page(0, 0, "http://curia.eu.int/de/actu/communiques/cp97/cp9776de.htm");
 	//std::cout << pp.getDomain() << std::endl;
 	/*HyperGraph<NodeSet>* hga = hyperGraph->debug();
@@ -17,7 +17,7 @@ void PageRank() {
 	//HyperGraph<NodeSet> hg = pr->create();
 
 	//
-	std::vector<NodeSetNode*> nodes;
+/*	std::vector<NodeSetNode*> nodes;
 
 
 	//noeud 1
@@ -70,6 +70,7 @@ void PageRank() {
 	PageRanker::Indegree(hg);
 
 	PageRanker::PageRank(hg, 20);
+	*/
 
 	int choice = -1;
 
@@ -77,7 +78,8 @@ void PageRank() {
 		cout << "------------------------" << endl;
 		cout << "Que voulez vous faire :" << endl << endl;
 		cout << "1 - Construire l'hypergraphe depuis les fichiers :" << endl;
-		cout << "2 - ?" << endl;
+		cout << "2 - Indegree" << endl;
+		cout << "3 - Page Rank" << endl;
 		cout << "0 - EXIT" << endl;
 
 		cin >> choice;
@@ -89,7 +91,17 @@ void PageRank() {
 		case 0:
 			break;
 		case 1:
-			//
+			pr->readNodes();
+			break;
+		case 2:
+			PageRanker::Indegree(pr->getA());
+			PageRanker::Indegree(pr->getB());
+			PageRanker::Indegree(pr->getC());
+			break;
+		case 3:
+			PageRanker::PageRank(pr->getA(), 20);
+			PageRanker::PageRank(pr->getB(), 20);
+			PageRanker::PageRank(pr->getC(), 20);
 			break;
 		default:
 			break;

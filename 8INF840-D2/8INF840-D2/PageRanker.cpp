@@ -18,7 +18,7 @@ void PageRanker::readNodes() {
 	string content;
 
 	map<int, NodeSetNode*> nodes;
-
+	std::cout << "Ajout des nodes en cours..." << std::endl;
 	if (myReadFile.is_open()) {
 		std::getline(myReadFile, outputLine);
 		std::getline(myReadFile, outputLine);
@@ -35,9 +35,12 @@ void PageRanker::readNodes() {
 			nodes.insert(std::pair<int, NodeSetNode*>(id, new NodeSetNode(nodeSet)));
 						//std::cout << content << std::endl;
 		}
+		myReadFile.close();
+		std::cout << "Fin de l'ajout des nodes" << std::endl;
 		//A
 		ifstream myReadFile2("Content/testEdges.txt");
 		//ifstream myReadFile2("Content/eu-2005.edges.txt");
+		std::cout << "Ajout des edges en cours..." << std::endl;
 		std::vector<EdgeSetNode*> edges;
 		if (myReadFile2.is_open()) {
 			std::getline(myReadFile2, outputLine);
@@ -50,32 +53,33 @@ void PageRanker::readNodes() {
 				std::getline(Line, content, ' ');
 				int outnode = stoi(content);
 
-				if (nodes.find(innode) == nodes.end() && nodes.find(outnode) == nodes.end()) {
+				if (nodes.find(innode) != nodes.end() && nodes.find(outnode) != nodes.end()) {
 					edges.push_back(new EdgeSetNode(nodes[innode], nodes[outnode]));
-					nodes[innode]->addEdge(edges[edges.size() - 1]);
+					nodes[innode]->addEdge(nodes[outnode]);
 				}
 			}
 
 			contentA = new HyperGraph<NodeSet>(nodes[0]);
 			std::cout << "Fin de l'ajout des edges" << std::endl;
+			myReadFile2.close();
 		}
 
 		//Host
-		contentB->setContent(mapToVector(NodesToBloc(nodes, true)));
+		std::vector<NodeSetNode*> tempMap = mapToVector(NodesToBloc(nodes, true));
+		contentB->setContent(tempMap);
 
 		//Domain
-		contentC->setContent(mapToVector(NodesToBloc(nodes, false)));
+		tempMap = mapToVector(NodesToBloc(nodes, false));
+		contentC->setContent(tempMap);
 	}
-
-	system("PAUSE");
-	myReadFile.close();
+	//system("PAUSE");
 }
 
 H_Node* PageRanker::getNodeFromSet(NodeSetNode* set) {
-	H_Node* element;
-	for (NodeSet::iterator i = set->getContent().begin(); i != set->getContent().end(); i++) {
+	H_Node* element = *(set->getContent().begin());
+	/*for (NodeSet::iterator i = set->getContent().begin(); i != set->getContent().end(); i++) {
 		element = *i;
-	}
+	}*/
 	return element;
 }
 
@@ -148,6 +152,14 @@ map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, NodeSetNode*> nodes, 
 	for (map<int, NodeSetNode*>::iterator it = nodes.begin(); it != nodes.end(); ++it)
 	{
 		//Bloc
+		if (!it->second) {
+//			In this case one node from the map is null
+			continue;
+		} else if (it->second) {
+			//			std::cout << ((H_Node*)*(it->second->getContent().begin()))->getContent().url << std::endl;
+			//std::cout << "ok " << getNodeFromSet(it->second)->getContent().url << std::endl;
+		}
+
 		H_Node* nodeSet = getNodeFromSet(it->second);
 		host = isHost ? nodeSet->getContent().getHost() : nodeSet->getContent().getDomain();
 		if (setsHost.find(host) == setsHost.end()) {
