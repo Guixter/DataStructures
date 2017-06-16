@@ -9,7 +9,7 @@ typedef HyperGraph<NodeSet>::Edge EdgeSetNode;
 class PageRanker
 {
 public:
-	//static const double df = 0.85;
+	static constexpr double df = 0.85;
 
 	PageRanker();
 
@@ -23,7 +23,9 @@ public:
 	static void Indegree(HyperGraph<NodeSet>* hg);
 	static void PageRank(HyperGraph<NodeSet>* hg, int maxIter);
 
-	HyperGraph<NodeSet>* debug() { return contentA; };
+	HyperGraph<NodeSet>* getA() { return contentA; };
+	HyperGraph<NodeSet>* getB() { return contentA; };
+	HyperGraph<NodeSet>* getC() { return contentA; };
 
 	~PageRanker();
 
