@@ -250,3 +250,7 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+8INF840-D2/8INF840-D2/Content/eu-2005\.edges\.txt
+
+8INF840-D2/8INF840-D2/Content/eu-2005\.nodes\.txt
