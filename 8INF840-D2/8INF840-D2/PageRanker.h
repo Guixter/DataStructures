@@ -17,8 +17,9 @@ public:
 	std::map<std::string, NodeSetNode*> NodesToBloc(std::map<int, NodeSetNode*> nodes, bool isHost);
 	H_Node* getNodeFromSet(NodeSetNode* set);
 	std::vector<NodeSetNode*> mapToVector(std::map<std::string, NodeSetNode*> mapNodes);
+	std::vector<NodeSetNode*> mapToVector(std::map<int, NodeSetNode*> mapNodes);
 
-	HyperGraph<NodeSet> create();
+	HyperGraph<NodeSet>* createTestHG();
 
 	static void Indegree(HyperGraph<NodeSet>* hg);
 	static void PageRank(HyperGraph<NodeSet>* hg, int maxIter);

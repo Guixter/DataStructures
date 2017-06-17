@@ -19,9 +19,15 @@ void PageRanker::readNodes() {
 
 	map<int, NodeSetNode*> nodes;
 	std::cout << "Ajout des nodes en cours..." << std::endl;
+
+	//creation des noeuds
 	if (myReadFile.is_open()) {
+
+		//lignes de config
 		std::getline(myReadFile, outputLine);
 		std::getline(myReadFile, outputLine);
+
+
 		while (std::getline(myReadFile, outputLine)) {
 			std::stringstream Line(outputLine);
 
@@ -30,13 +36,15 @@ void PageRanker::readNodes() {
 			std::getline(Line, content, ' ');
 			int outdegree = stoi(content);
 			std::getline(Line, content, ' ');
-			NodeSet nodeSet = NodeSet();
-			nodeSet.insert(new H_Node(Page(id, outdegree, content)));
-			nodes.insert(std::pair<int, NodeSetNode*>(id, new NodeSetNode(nodeSet)));
+			NodeSet* nodeSet = new NodeSet();
+			nodeSet->insert(new H_Node(Page(id, outdegree, content)));
+			nodes.insert(std::pair<int, NodeSetNode*>(id, new NodeSetNode(*nodeSet)));
 						//std::cout << content << std::endl;
 		}
 		myReadFile.close();
 		std::cout << "Fin de l'ajout des nodes" << std::endl;
+
+
 		//A
 		ifstream myReadFile2("Content/testEdges.txt");
 		//ifstream myReadFile2("Content/eu-2005.edges.txt");
@@ -59,7 +67,8 @@ void PageRanker::readNodes() {
 				}
 			}
 
-			contentA = new HyperGraph<NodeSet>(nodes[0]);
+			contentA = new HyperGraph<NodeSet>(nodes[1]);
+			contentA->setContent(mapToVector(nodes));
 			std::cout << "Fin de l'ajout des edges" << std::endl;
 			myReadFile2.close();
 		}
@@ -90,59 +99,66 @@ std::vector<NodeSetNode*> PageRanker::mapToVector(std::map<std::string, NodeSetN
 	}
 	return nodes;
 }
+std::vector<NodeSetNode*> PageRanker::mapToVector(std::map<int, NodeSetNode*> mapNodes) {
+	std::vector<NodeSetNode*> nodes;
+	for (std::map<int, NodeSetNode*>::iterator it = mapNodes.begin(); it != mapNodes.end(); ++it) {
+		nodes.push_back(it->second);
+	}
+	return nodes;
+}
 
-HyperGraph<NodeSet> PageRanker::create() {
+HyperGraph<NodeSet>* PageRanker::createTestHG() {
 
 	std::vector<NodeSetNode*> nodes;
 
 
 	//noeud 1
-	NodeSet nodeSet1 = NodeSet();
-	nodeSet1.insert(new H_Node(Page(1, 2, "http://de.osha.eu.int/de/print/")));
-	NodeSetNode node1 = NodeSetNode(nodeSet1);
-	nodes.push_back(&node1);
+	NodeSet* nodeSet1 = new NodeSet();
+	nodeSet1->insert(new H_Node(Page(1, 2, "http://de.osha.eu.int/de/print/")));
+	NodeSetNode* node1 = new NodeSetNode(*nodeSet1);
+	nodes.push_back(node1);
 
 
 	//noeud 2
-	NodeSet nodeSet2 = NodeSet();
-	nodeSet2.insert(new H_Node(Page(1, 2, "http://de.osha.eu.int/de/print/statistics/EW2002_IBM_Massnahmen_gegen_Stress_am_Arbeitsplatz.php")));
-	NodeSetNode node2 = NodeSetNode(nodeSet2);
-	nodes.push_back(&node2);
+	NodeSet* nodeSet2 = new NodeSet();
+	nodeSet2->insert(new H_Node(Page(1, 2, "http://de.osha.eu.int/de/print/statistics/EW2002_IBM_Massnahmen_gegen_Stress_am_Arbeitsplatz.php")));
+	NodeSetNode* node2 = new NodeSetNode(*nodeSet2);
+	nodes.push_back(node2);
 
 
 	//noeud 3
-	NodeSet nodeSet3 = NodeSet();
-	nodeSet3.insert(new H_Node(Page(1, 2, "http://euro.eu.int/")));
-	NodeSetNode node3 = NodeSetNode(nodeSet3);
-	nodes.push_back(&node3);
+	NodeSet* nodeSet3 = new NodeSet();
+	nodeSet3->insert(new H_Node(Page(1, 2, "http://euro.eu.int/")));
+	NodeSetNode* node3 = new NodeSetNode(*nodeSet3);
+	nodes.push_back(node3);
 
 
 	//noeud 4
-	NodeSet nodeSet4 = NodeSet();
-	nodeSet4.insert(new H_Node(Page(1, 2, "http://biodiversity.eionet.eu.int/")));
-	NodeSetNode node4 = NodeSetNode(nodeSet4);
-	nodes.push_back(&node4);
+	NodeSet* nodeSet4 = new NodeSet();
+	nodeSet4->insert(new H_Node(Page(1, 2, "http://biodiversity.eionet.eu.int/")));
+	NodeSetNode* node4 = new NodeSetNode(*nodeSet4);
+	nodes.push_back(node4);
 
 	// 12
-	EdgeSetNode* edge12 = new EdgeSetNode(&node1, &node2);
-	node1.addEdge(edge12);
+	EdgeSetNode* edge12 = new EdgeSetNode(node1, node2);
+	node1->addEdge(edge12);
 	// 13
-	EdgeSetNode* edge13 = new EdgeSetNode(&node1, &node3);
-	node1.addEdge(edge13);
+	EdgeSetNode* edge13 = new EdgeSetNode(node1, node3);
+	node1->addEdge(edge13);
 	// 23
-	EdgeSetNode* edge23 = new EdgeSetNode(&node2, &node3);
-	node2.addEdge(edge23);
+	EdgeSetNode* edge23 = new EdgeSetNode(node2, node3);
+	node2->addEdge(edge23);
 	// 31
-	EdgeSetNode* edge31 = new EdgeSetNode(&node3, &node1);
-	node3.addEdge(edge31);
+	EdgeSetNode* edge31 = new EdgeSetNode(node3, node1);
+	node3->addEdge(edge31);
 	// 43
-	EdgeSetNode* edge43 = new EdgeSetNode(&node4, &node3);
-	node4.addEdge(edge43);
-
-	HyperGraph<NodeSet>* hg = new HyperGraph<NodeSet>(&node1);
+	EdgeSetNode* edge43 = new EdgeSetNode(node4, node3);
+	node4->addEdge(edge43);
+	
+	HyperGraph<NodeSet>* hg = new HyperGraph<NodeSet>(node1);
 	hg->setContent(nodes);
 
-	return *hg;
+	return hg;
 
 };
 
@@ -232,7 +248,7 @@ void PageRanker::Indegree(HyperGraph<NodeSet>* hg) {
 }
 void PageRanker::PageRank(HyperGraph<NodeSet>* hg, int maxIter) {
 
-	double df = 0.85;
+	//double df = 0.85;
 
 	std::vector<HyperGraph<NodeSet>::Node*> blocs = hg->getNodes();
 	for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
@@ -266,7 +282,6 @@ void PageRanker::PageRank(HyperGraph<NodeSet>* hg, int maxIter) {
 
 				Page newPage = Page(p.id, 1.0 - df, p.url);
 				(*curNode)->setContent(newPage);
-				//p.weight = 1.0 - df;
 			}
 		}
 
