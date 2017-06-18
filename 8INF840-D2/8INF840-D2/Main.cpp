@@ -1,6 +1,4 @@
 #include <iostream>
-#include "SpacePartitioning.h"
-
 using namespace std;
 
 void KdTree() {
@@ -13,7 +11,8 @@ void PageRank() {
 }
 
 void Graph() {
-
+	Zombie z;
+	z.launch();
 }
 
 void menu() {
