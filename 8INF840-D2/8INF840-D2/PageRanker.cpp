@@ -304,6 +304,22 @@ void PageRanker::PageRank(HyperGraph<NodeSet>* hg, int maxIter) {
 	}
 }
 
+void PageRanker::afficherNotes(HyperGraph<NodeSet>* hg) {
+
+	std::vector<HyperGraph<NodeSet>::Node*> blocs = hg->getNodes();
+	for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
+	{
+		std::cout << "Bloc" << endl << "\t";
+		NodeSet* set = (*curBloc)->getContent();
+		for (NodeSet::iterator curNode = set->begin(); curNode != set->end(); curNode++)
+		{
+
+			Page* p = (*curNode)->getContent();
+			std::cout << "\t" << "page : id " << p->id << " note " << p->weight << endl;
+
+		}
+	}
+}
 PageRanker::~PageRanker()
 {
 }

@@ -9,16 +9,6 @@ void KdTree() {
 
 void PageRank() {
 	PageRanker* pr = new PageRanker();
-/*	pr->readNodes();
-	
-
-	//HyperGraph<NodeSet>* hg = pr->createTestHG();
-	HyperGraph<NodeSet>* hg = pr->getA();
-
-	PageRanker::Indegree(hg);
-
-	PageRanker::PageRank(hg, 20);
-*/	
 
 	int choice = -1;
 
@@ -28,6 +18,7 @@ void PageRank() {
 		cout << "1 - Construire l'hypergraphe depuis les fichiers :" << endl;
 		cout << "2 - Indegree" << endl;
 		cout << "3 - Page Rank" << endl;
+		cout << "4 - Afficher les notes" << endl;
 		cout << "0 - EXIT" << endl;
 
 		cin >> choice;
@@ -50,6 +41,14 @@ void PageRank() {
 			PageRanker::PageRank(pr->getA(), 20);
 			PageRanker::PageRank(pr->getB(), 20);
 			PageRanker::PageRank(pr->getC(), 20);
+			break;
+		case 4:
+			std::cout << endl << " Granularité au noeud" << endl;
+			PageRanker::afficherNotes(pr->getA());
+			std::cout << endl << " Granularité à l'hôte" << endl;
+			PageRanker::afficherNotes(pr->getB());
+			std::cout << endl << " Granularité au domaine" << endl;
+			PageRanker::afficherNotes(pr->getC());
 			break;
 		default:
 			break;

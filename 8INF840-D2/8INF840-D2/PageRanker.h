@@ -23,6 +23,7 @@ public:
 
 	static void Indegree(HyperGraph<NodeSet>* hg);
 	static void PageRank(HyperGraph<NodeSet>* hg, int maxIter);
+	static void afficherNotes(HyperGraph<NodeSet>* hg);
 
 	HyperGraph<NodeSet>* getA() { return contentA; };
 	HyperGraph<NodeSet>* getB() { return contentA; };
