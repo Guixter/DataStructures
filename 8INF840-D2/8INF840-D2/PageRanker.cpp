@@ -85,7 +85,7 @@ void PageRanker::readNodes() {
 }
 
 H_Node* PageRanker::getNodeFromSet(NodeSetNode* set) {
-	H_Node* element = *(set->getContent().begin());
+	H_Node* element = *(set->getContent()->begin());
 	/*for (NodeSet::iterator i = set->getContent().begin(); i != set->getContent().end(); i++) {
 		element = *i;
 	}*/
@@ -177,26 +177,26 @@ map<string, NodeSetNode*> PageRanker::NodesToBloc(map<int, NodeSetNode*> nodes, 
 		}
 
 		H_Node* nodeSet = getNodeFromSet(it->second);
-		host = isHost ? nodeSet->getContent().getHost() : nodeSet->getContent().getDomain();
+		host = isHost ? nodeSet->getContent()->getHost() : nodeSet->getContent()->getDomain();
 		if (setsHost.find(host) == setsHost.end()) {
 			setsHost.insert(std::pair<string, NodeSetNode*>(host, new NodeSetNode(NodeSet())));
 		}
-		setsHost[host]->getContent().insert(nodeSet); // Insert currrent Node Page in the right set
+		setsHost[host]->getContent()->insert(nodeSet); // Insert currrent Node Page in the right set
 		for (HyperGraph<Page>::Edge* edgeNode : nodeSet->getEdges())
 		{
-			if (edgeNode->getOut()->getContent().getHost() != host) {
+			if (edgeNode->getOut()->getContent()->getHost() != host) {
 				bool already = false;
 				//verifier si setsHost[host]->getEdges() ne contient pas deja celui vers lequel on pointe
 				for (EdgeSetNode* edgeNode2 : setsHost[host]->getEdges())
 				{
-					if (edgeNode2->getOut()->getContent().find(edgeNode->getOut()) != edgeNode2->getOut()->getContent().end()) {
+					if (edgeNode2->getOut()->getContent()->find(edgeNode->getOut()) != edgeNode2->getOut()->getContent()->end()) {
 						already = true;
 						break;
 					}
 				}
 				if (!already) {
 					EdgeSetNode* ed = new EdgeSetNode(setsHost[host], new NodeSetNode(NodeSet()));
-					ed->getOut()->getContent().insert(edgeNode->getOut());
+					ed->getOut()->getContent()->insert(edgeNode->getOut());
 					setsHost[host]->addEdge(ed);
 				}
 			}
@@ -218,12 +218,13 @@ void PageRanker::Indegree(HyperGraph<NodeSet>* hg) {
 	std::vector<HyperGraph<NodeSet>::Node*> blocs = hg->getNodes();
 	for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
 	{
-		NodeSet set = (*curBloc)->getContent();
-		for (NodeSet::iterator curNode = set.begin(); curNode != set.end(); curNode++)
+		NodeSet* set = (*curBloc)->getContent();
+		for (NodeSet::iterator curNode = set->begin(); curNode != set->end(); curNode++)
 		{
-			Page p = (*curNode)->getContent();
-			Page newPage = Page(p.id, 0.0, p.url);
-			(*curNode)->setContent(newPage);
+			//Page* p = 
+				(*curNode)->getContent()->weight = 0.0;
+			/*Page newPage = Page(p.id, 0.0, p.url);
+			(*curNode)->setContent(newPage);*/
 			//p.weight = 0.0;
 		}
 	}
@@ -236,34 +237,35 @@ void PageRanker::Indegree(HyperGraph<NodeSet>* hg) {
 		std::vector<HyperGraph<NodeSet>::Edge*> edges = (*curBloc)->getEdges();
 		for (vector<HyperGraph<NodeSet>::Edge*>::iterator curEdge = edges.begin(); curEdge != edges.end(); ++curEdge)
 		{
-			NodeSet targettedSet = (*curEdge)->getOut()->getContent();
-			H_Node *const node = *(targettedSet.begin());
+			NodeSet* targettedSet = (*curEdge)->getOut()->getContent();
+			H_Node *const node = *(targettedSet->begin());
 
-			Page p = node->getContent();
+			//Page p = 
+				node->getContent()->weight += 1.0;
+				/*
 			Page newPage = Page(p.id, p.weight + 1.0, p.url);
-			node->setContent(newPage);
+			node->setContent(newPage);*/
 			//p.weight += 1.0;
 		}
 	}
 }
 void PageRanker::PageRank(HyperGraph<NodeSet>* hg, int maxIter) {
 
-	//double df = 0.85;
-
+	//Mettre le poids des pages a 1
 	std::vector<HyperGraph<NodeSet>::Node*> blocs = hg->getNodes();
 	for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
 	{
-		NodeSet set = (*curBloc)->getContent();
-		for (NodeSet::iterator curNode = set.begin(); curNode != set.end(); curNode++)
+		NodeSet* set = (*curBloc)->getContent();
+		for (NodeSet::iterator curNode = set->begin(); curNode != set->end(); curNode++)
 		{
-			Page p = (*curNode)->getContent();
-			Page newPage = Page(p.id, 1.0, p.url);
-			(*curNode)->setContent(newPage);
+			
+			(*curNode)->getContent()->weight = 1.0;
+
 		}
 	}
 
 	int nbIter = 0;
-	while (nbIter <= maxIter)
+	while (nbIter < maxIter)
 	{
 		nbIter++;
 
@@ -273,15 +275,13 @@ void PageRanker::PageRank(HyperGraph<NodeSet>* hg, int maxIter) {
 
 		for (vector<HyperGraph<NodeSet>::Node*>::iterator curBloc = blocs.begin(); curBloc != blocs.end(); ++curBloc)
 		{
-			NodeSet set = (*curBloc)->getContent();
+			NodeSet* set = (*curBloc)->getContent();
 			(*curBloc)->setWeight(0.0);
-			for (NodeSet::iterator curNode = set.begin(); curNode != set.end(); curNode++)
+			for (NodeSet::iterator curNode = set->begin(); curNode != set->end(); curNode++)
 			{
-				Page p = (*curNode)->getContent();
-				(*curBloc)->setWeight((*curBloc)->getWeight() + p.weight);
-
-				Page newPage = Page(p.id, 1.0 - df, p.url);
-				(*curNode)->setContent(newPage);
+				Page* p = (*curNode)->getContent();
+				(*curBloc)->setWeight((*curBloc)->getWeight() + p->weight);
+				p->weight = 1.0 - df;
 			}
 		}
 
@@ -296,11 +296,9 @@ void PageRanker::PageRank(HyperGraph<NodeSet>* hg, int maxIter) {
 			double blocWeight = (*curBloc)->getWeight();
 			for (vector<HyperGraph<NodeSet>::Edge*>::iterator curEdge = edges.begin(); curEdge != edges.end(); ++curEdge)
 			{
-				NodeSet targettedSet = (*curEdge)->getOut()->getContent();
-				H_Node *const node = *(targettedSet.begin());
-				Page p = node->getContent();
-				Page newPage = Page(p.id, p.weight + df * blocWeight / outDegree, p.url);
-				node->setContent(newPage);
+				NodeSet* targettedSet = (*curEdge)->getOut()->getContent();
+				H_Node *const node = *(targettedSet->begin());
+				node->getContent()->weight += df * blocWeight / outDegree;
 			}
 		}
 	}

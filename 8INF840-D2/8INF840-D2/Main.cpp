@@ -9,7 +9,7 @@ void KdTree() {
 
 void PageRank() {
 	PageRanker* pr = new PageRanker();
-	pr->readNodes();
+/*	pr->readNodes();
 	
 
 	//HyperGraph<NodeSet>* hg = pr->createTestHG();
@@ -18,7 +18,7 @@ void PageRank() {
 	PageRanker::Indegree(hg);
 
 	PageRanker::PageRank(hg, 20);
-	
+*/	
 
 	int choice = -1;
 

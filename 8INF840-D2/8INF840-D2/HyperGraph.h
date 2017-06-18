@@ -77,7 +77,7 @@ public:
 		void addEdge(Node* node) { edges.push_back(new Edge(this, node)); };
 		std::vector<Edge*> getEdges() { return edges; };
 
-		T getContent() { return content; };
+		T* getContent() { return &content; };
 		void setContent(T _content) { content = _content; };
 
 		double getWeight() { return weight; };
