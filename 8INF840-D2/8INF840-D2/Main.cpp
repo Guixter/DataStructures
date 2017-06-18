@@ -12,16 +12,16 @@ void KdTree() {
 
 void PageRank() {
 	PageRanker* pr = new PageRanker();
+	pr->readNodes();
 
 	int choice = -1;
 
 	while (choice != 0) {
 		cout << "------------------------" << endl;
 		cout << "Que voulez vous faire :" << endl << endl;
-		cout << "1 - Construire l'hypergraphe depuis les fichiers :" << endl;
-		cout << "2 - Indegree" << endl;
-		cout << "3 - Page Rank" << endl;
-		cout << "4 - Afficher les notes" << endl;
+		cout << "1 - Indegree" << endl;
+		cout << "2 - Page Rank" << endl;
+		cout << "3 - Afficher les notes" << endl;
 		cout << "0 - EXIT" << endl;
 
 		cin >> choice;
@@ -33,24 +33,21 @@ void PageRank() {
 		case 0:
 			break;
 		case 1:
-			pr->readNodes();
-			break;
-		case 2:
 			PageRanker::Indegree(pr->getA());
 			PageRanker::Indegree(pr->getB());
 			PageRanker::Indegree(pr->getC());
 			break;
-		case 3:
+		case 2:
 			PageRanker::PageRank(pr->getA(), 20);
 			PageRanker::PageRank(pr->getB(), 20);
 			PageRanker::PageRank(pr->getC(), 20);
 			break;
-		case 4:
-			std::cout << endl << " Granularité au noeud" << endl;
+		case 3:
+			std::cout << endl << " Granularite au noeud" << endl;
 			PageRanker::afficherNotes(pr->getA());
-			std::cout << endl << " Granularité à l'hôte" << endl;
+			std::cout << endl << " Granularite a l'hote" << endl;
 			PageRanker::afficherNotes(pr->getB());
-			std::cout << endl << " Granularité au domaine" << endl;
+			std::cout << endl << " Granularite au domaine" << endl;
 			PageRanker::afficherNotes(pr->getC());
 			break;
 		default:
