@@ -13,10 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Exercice1">
+      <UniqueIdentifier>{14a8ee72-5075-46a1-a9c6-60ae51813911}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exercice1">
+      <UniqueIdentifier>{72e3b8d6-14d9-4036-9012-c723bbd3726d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BinaryTree.cpp">
+      <Filter>Source Files\Exercice1</Filter>
+    </ClCompile>
+    <ClCompile Include="KDTree.cpp">
+      <Filter>Source Files\Exercice1</Filter>
+    </ClCompile>
+    <ClCompile Include="SpacePartitioning.cpp">
+      <Filter>Source Files\Exercice1</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BinaryTree.h">
+      <Filter>Header Files\Exercice1</Filter>
+    </ClInclude>
+    <ClInclude Include="KDTree.h">
+      <Filter>Header Files\Exercice1</Filter>
+    </ClInclude>
+    <ClInclude Include="SpacePartitioning.h">
+      <Filter>Header Files\Exercice1</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
